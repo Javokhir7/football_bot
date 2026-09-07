@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ravalliq Chempionati</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: #0f172a;
+            color: #f8fafc;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .active-tab {
+            background-color: #2563eb;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="p-3 pb-8">
+    <!-- Header -->
+    <div class="text-center py-4">
+        <h1 class="text-xl font-bold tracking-tight text-white flex items-center justify-center gap-2">
+            🏆 Ravalliq Chempionati
+        </h1>
+        <p class="text-xs text-slate-400 mt-1">Jonli turnir jadvali va taqvim</p>
+    </div>
+
+    <!-- Asosiy navigatsiya tablari -->
+    <div class="flex bg-slate-800/80 p-1 rounded-xl mb-4 text-xs font-semibold">
+        <button onclick="switchMainTab('standings')" id="tab-standings" class="flex-1 py-2 rounded-lg active-tab transition">Jadval</button>
+        <button onclick="switchMainTab('scorers')" id="tab-scorers" class="flex-1 py-2 rounded-lg text-slate-400 transition">To'purarlar</button>
+        <button onclick="switchMainTab('matches')" id="tab-matches" class="flex-1 py-2 rounded-lg text-slate-400 transition">O'yinlar</button>
+    </div>
+
+    <!-- 1. Jadvallar bo'limi -->
+    <div id="section-standings">
+        <!-- Guruh tablari -->
+        <div class="flex gap-2 mb-3 overflow-x-auto pb-1">
+            <button onclick="renderGroup('A')" id="btn-group-A" class="px-4 py-1.5 rounded-lg bg-blue-600 text-xs font-bold">Guruh A</button>
+            <button onclick="renderGroup('B')" id="btn-group-B" class="px-4 py-1.5 rounded-lg bg-slate-800 text-slate-400 text-xs font-bold">Guruh B</button>
+            <button onclick="renderGroup('C')" id="btn-group-C" class="px-4 py-1.5 rounded-lg bg-slate-800 text-slate-400 text-xs font-bold">Guruh C</button>
+            <button onclick="renderGroup('D')" id="btn-group-D" class="px-4 py-1.5 rounded-lg bg-slate-800 text-slate-400 text-xs font-bold">Guruh D</button>
+        </div>
+
+        <div class="bg-slate-800/60 rounded-xl overflow-hidden border border-slate-700/50 shadow-lg">
+            <table class="w-full text-left text-xs">
+                <thead class="bg-slate-800 text-slate-400 uppercase text-[10px]">
+                    <tr>
+                        <th class="py-2.5 px-3 w-8">#</th>
+                        <th class="py-2.5 px-2">Jamoa</th>
+                        <th class="py-2.5 px-2 text-center">O'</th>
+                        <th class="py-2.5 px-2 text-center">+/-</th>
+                        <th class="py-2.5 px-3 text-right">Och</th>
+                    </tr>
+                </thead>
+                <tbody id="standings-body" class="divide-y divide-slate-700/40"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2. To'purarlar bo'limi -->
+    <div id="section-scorers" class="hidden space-y-2"></div>
+
+    <!-- 3. Keyingi o'yinlar bo'limi -->
+    <div id="section-matches" class="hidden space-y-4"></div>
+
+    <script>
+        const tg = window.Telegram?.WebApp;
+        if (tg) tg.expand();
+
+        const groupsData = {
+            "A": [
+                { name: "Mahalla", p: 4, diff: "+9", pts: 9 },
+                { name: "2006", p: 4, diff: "0", pts: 9 },
+                { name: "1993", p: 4, diff: "+10", pts: 7 },
+                { name: "2003", p: 3, diff: "+10", pts: 6 },
+                { name: "2009", p: 5, diff: "-10", pts: 6 },
+                { name: "2004", p: 5, diff: "-6", pts: 5 },
+                { name: "2009-23", p: 5, diff: "-13", pts: 1 }
+            ],
+            "B": [
+                { name: "1996-23", p: 4, diff: "+5", pts: 9 },
+                { name: "2002-23", p: 5, diff: "+3", pts: 7 },
+                { name: "1986", p: 4, diff: "-2", pts: 6 },
+                { name: "2005", p: 4, diff: "-10", pts: 6 },
+                { name: "2003-12", p: 4, diff: "+5", pts: 4 },
+                { name: "1991-23", p: 3, diff: "0", pts: 4 },
+                { name: "2002", p: 4, diff: "-1", pts: 4 }
+            ],
+            "C": [
+                { name: "1988", p: 5, diff: "+10", pts: 10 },
+                { name: "2001", p: 4, diff: "+6", pts: 10 },
+                { name: "1991", p: 3, diff: "+12", pts: 9 },
+                { name: "1998-v", p: 4, diff: "+6", pts: 6 },
+                { name: "1992-23", p: 4, diff: "-7", pts: 4 },
+                { name: "2000", p: 4, diff: "-14", pts: 1 },
+                { name: "2008-23", p: 4, diff: "-13", pts: 0 }
+            ],
+            "D": [
+                { name: "1997", p: 4, diff: "+22", pts: 12 },
+                { name: "1994", p: 5, diff: "+11", pts: 10 },
+                { name: "1995", p: 4, diff: "+9", pts: 7 },
+                { name: "1998", p: 4, diff: "+3", pts: 7 },
+                { name: "2007", p: 4, diff: "-2", pts: 4 },
+                { name: "Obod-98", p: 4, diff: "-10", pts: 3 },
+                { name: "1996", p: 5, diff: "-33", pts: 0 }
+            ]
+        };
+
+        const scorersData = [
+            { name: "Jahongir", team: "1997", goals: 17 },
+            { name: "Sardor", team: "2001", goals: 14 },
+            { name: "Islom", team: "1993", goals: 13 },
+            { name: "Botir", team: "1998-v", goals: 12 },
+            { name: "Xolyor", team: "2002-23", goals: 11 },
+            { name: "Abdulaziz", team: "2007", goals: 11 },
+            { name: "Botir", team: "2003", goals: 9 },
+            { name: "Ravshan", team: "2005", goals: 8 },
+            { name: "Lochin", team: "1998", goals: 8 },
+            { name: "Farrux", team: "2002-23", goals: 8 }
+        ];
+
+        const matchesData = [
+            {
+                date: "9-Sentyabr (Chorshanba)",
+                list: [
+                    { t1: "1986", t2: "2005", time: "19:00" },
+                    { t1: "2006", t2: "2003", time: "19:40" },
+                    { t1: "1997", t2: "2007", time: "20:20" },
+                    { t1: "1996-23", t2: "1991-23", time: "21:00" },
+                    { t1: "1991", t2: "1998-v", time: "21:40" },
+                    { t1: "2008-23", t2: "1992-23", time: "22:20" },
+                    { t1: "1995", t2: "1998", time: "23:00" }
+                ]
+            },
+            {
+                date: "11-Sentyabr (Juma)",
+                list: [
+                    { t1: "1991", t2: "2001", time: "19:00" },
+                    { t1: "2000", t2: "2008-23", time: "19:40" },
+                    { t1: "Mahalla", t2: "2004", time: "20:20" },
+                    { t1: "1991-23", t2: "2003-12", time: "21:00" },
+                    { t1: "2005", t2: "2002", time: "21:40" },
+                    { t1: "Obod", t2: "2007", time: "22:20" },
+                    { t1: "1993", t2: "2003", time: "23:00" }
+                ]
+            }
+        ];
+
+        function switchMainTab(tab) {
+            ['standings', 'scorers', 'matches'].forEach(t => {
+                document.getElementById(`section-${t}`).classList.add('hidden');
+                document.getElementById(`tab-${t}`).className = "flex-1 py-2 rounded-lg text-slate-400 transition";
+            });
+            document.getElementById(`section-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).className = "flex-1 py-2 rounded-lg active-tab transition";
+        }
+
+        function renderGroup(grp) {
+            ['A', 'B', 'C', 'D'].forEach(g => {
+                const btn = document.getElementById(`btn-group-${g}`);
+                btn.className = (g === grp) 
+                    ? "px-4 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold transition"
+                    : "px-4 py-1.5 rounded-lg bg-slate-800 text-slate-400 text-xs font-bold transition";
+            });
+
+            const tbody = document.getElementById('standings-body');
+            tbody.innerHTML = groupsData[grp].map((item, idx) => `
+                <tr class="hover:bg-slate-700/30">
+                    <td class="py-2.5 px-3 font-semibold text-slate-400">${idx + 1}</td>
+                    <td class="py-2.5 px-2 font-medium text-white">${item.name}</td>
+                    <td class="py-2.5 px-2 text-center text-slate-300">${item.p}</td>
+                    <td class="py-2.5 px-2 text-center text-slate-400 font-mono">${item.diff}</td>
+                    <td class="py-2.5 px-3 text-right font-bold text-amber-400">${item.pts}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderScorers() {
+            const container = document.getElementById('section-scorers');
+            container.innerHTML = scorersData.map((s, idx) => `
+                <div class="flex items-center justify-between bg-slate-800/60 p-3 rounded-xl border border-slate-700/40">
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 text-center font-bold text-sm ${idx < 3 ? 'text-amber-400' : 'text-slate-400'}">${idx + 1}</span>
+                        <div>
+                            <div class="font-bold text-sm text-white">${s.name}</div>
+                            <div class="text-[11px] text-slate-400">${s.team}</div>
+                        </div>
+                    </div>
+                    <div class="text-sm font-bold bg-blue-600/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-lg">
+                        ${s.goals} ⚽
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderMatches() {
+            const container = document.getElementById('section-matches');
+            container.innerHTML = matchesData.map(group => `
+                <div>
+                    <div class="text-xs font-bold text-slate-400 mb-2 tracking-wide uppercase">📅 ${group.date}</div>
+                    <div class="space-y-2">
+                        ${group.list.map(m => `
+                            <div class="flex items-center justify-between bg-slate-800/60 px-4 py-2.5 rounded-xl border border-slate-700/40">
+                                <span class="text-xs font-semibold text-white flex-1">${m.t1}</span>
+                                <span class="px-2 py-0.5 bg-slate-700/70 text-[11px] font-mono rounded text-amber-400 font-bold mx-2">${m.time}</span>
+                                <span class="text-xs font-semibold text-white flex-1 text-right">${m.t2}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        renderGroup('A');
+        renderScorers();
+        renderMatches();
+    </script>
+</body>
+</html>
