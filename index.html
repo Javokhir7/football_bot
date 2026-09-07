@@ -2,74 +2,356 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ravalliq Chempionati</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body {
-            background: #0f172a;
-            color: #f8fafc;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        :root {
+            --ucl-dark: #04091e;
+            --ucl-card: rgba(14, 25, 59, 0.7);
+            --ucl-cyan: #00f2fe;
+            --ucl-blue: #0066ff;
+            --ucl-border: rgba(0, 242, 254, 0.18);
+            --text-main: #ffffff;
+            --text-muted: #8ea3bf;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
-        .active-tab {
-            background-color: #2563eb;
-            color: #ffffff;
+
+        body {
+            background-color: var(--ucl-dark);
+            background-image: 
+                radial-gradient(circle at 50% -20%, rgba(0, 102, 255, 0.45) 0%, transparent 65%),
+                radial-gradient(circle at 100% 100%, rgba(0, 242, 254, 0.15) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            padding: 14px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            padding: 12px 0 16px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--ucl-cyan);
+            border: 1px solid var(--ucl-border);
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(0, 242, 254, 0.08);
+            margin-bottom: 8px;
+        }
+
+        .header h1 {
+            font-size: 21px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(180deg, #ffffff 40%, var(--ucl-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Nav Tabs */
+        .main-tabs {
+            display: flex;
+            background: rgba(10, 20, 50, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .main-tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 9px 0;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+        }
+
+        .main-tab-btn.active {
+            background: linear-gradient(135deg, var(--ucl-blue), #0044bb);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 102, 255, 0.4);
+        }
+
+        /* Group Selector */
+        .groups-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+
+        .group-btn {
+            flex: 1;
+            background: rgba(14, 25, 59, 0.6);
+            border: 1px solid var(--ucl-border);
+            color: var(--text-muted);
+            padding: 7px 0;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .group-btn.active {
+            background: var(--ucl-cyan);
+            color: #04091e;
+            font-weight: 800;
+            border-color: var(--ucl-cyan);
+            box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
+        }
+
+        /* Card Container */
+        .card {
+            background: var(--ucl-card);
+            border: 1px solid var(--ucl-border);
+            border-radius: 14px;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            margin-bottom: 16px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        thead {
+            background: rgba(4, 9, 30, 0.6);
+            border-bottom: 1px solid var(--ucl-border);
+        }
+
+        th {
+            padding: 10px 4px;
+            font-weight: 700;
+            color: var(--text-muted);
+            font-size: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 10px 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .col-pos {
+            width: 28px;
+            font-weight: 800;
+            color: var(--text-muted);
+        }
+
+        .top-pos {
+            color: var(--ucl-cyan);
+        }
+
+        .col-team {
+            text-align: left;
+            font-weight: 700;
+            color: #fff;
+            padding-left: 6px !important;
+        }
+
+        .col-pts {
+            font-weight: 800;
+            color: var(--ucl-cyan);
+            font-size: 13px;
+        }
+
+        /* Scorers */
+        .scorer-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 11px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .scorer-item:last-child {
+            border-bottom: none;
+        }
+
+        .scorer-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scorer-rank {
+            font-size: 13px;
+            font-weight: 800;
+            width: 20px;
+            color: var(--text-muted);
+        }
+
+        .rank-gold {
+            color: var(--ucl-cyan);
+        }
+
+        .scorer-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .scorer-team {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .scorer-goals {
+            font-size: 12px;
+            font-weight: 800;
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--ucl-cyan);
+            border: 1px solid var(--ucl-border);
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+
+        /* Matches */
+        .date-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--ucl-cyan);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 14px 0 8px 4px;
+        }
+
+        .match-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .match-row:last-child {
+            border-bottom: none;
+        }
+
+        .match-t {
+            flex: 1;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .match-t.right {
+            text-align: right;
+        }
+
+        .match-time {
+            padding: 3px 8px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--ucl-border);
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
-<body class="p-3 pb-8">
-    <!-- Header -->
-    <div class="text-center py-4">
-        <h1 class="text-xl font-bold tracking-tight text-white flex items-center justify-center gap-2">
-            🏆 Ravalliq Chempionati
-        </h1>
-        <p class="text-xs text-slate-400 mt-1">Jonli turnir jadvali va taqvim</p>
+<body>
+
+    <div class="header">
+        <div class="badge">UEFA Champions League Edition</div>
+        <h1>Ravalliq Chempionati</h1>
+        <p>Jonli turnir jadvali va o'yinlar taqvimi</p>
     </div>
 
-    <!-- Asosiy navigatsiya tablari -->
-    <div class="flex bg-slate-800/80 p-1 rounded-xl mb-4 text-xs font-semibold">
-        <button onclick="switchMainTab('standings')" id="tab-standings" class="flex-1 py-2 rounded-lg active-tab transition">Jadval</button>
-        <button onclick="switchMainTab('scorers')" id="tab-scorers" class="flex-1 py-2 rounded-lg text-slate-400 transition">To'purarlar</button>
-        <button onclick="switchMainTab('matches')" id="tab-matches" class="flex-1 py-2 rounded-lg text-slate-400 transition">O'yinlar</button>
+    <!-- Asosiy tablar -->
+    <div class="main-tabs">
+        <button id="tab-standings" class="main-tab-btn active" onclick="switchMainTab('standings')">Jadval</button>
+        <button id="tab-scorers" class="main-tab-btn" onclick="switchMainTab('scorers')">To'purarlar</button>
+        <button id="tab-matches" class="main-tab-btn" onclick="switchMainTab('matches')">O'yinlar</button>
     </div>
 
     <!-- 1. Jadvallar bo'limi -->
     <div id="section-standings">
-        <!-- Guruh tablari -->
-        <div class="flex gap-2 mb-3 overflow-x-auto pb-1">
-            <button onclick="renderGroup('A')" id="btn-group-A" class="px-4 py-1.5 rounded-lg bg-blue-600 text-xs font-bold">Guruh A</button>
-            <button onclick="renderGroup('B')" id="btn-group-B" class="px-4 py-1.5 rounded-lg bg-slate-800 text-slate-400 text-xs font-bold">Guruh B</button>
-            <button onclick="renderGroup('C')" id="btn-group-C" class="px-4 py-1.5 rounded-lg bg-slate-800 text-slate-400 text-xs font-bold">Guruh C</button>
-            <button onclick="renderGroup('D')" id="btn-group-D" class="px-4 py-1.5 rounded-lg bg-slate-800 text-slate-400 text-xs font-bold">Guruh D</button>
+        <div class="groups-bar">
+            <button id="btn-group-A" class="group-btn active" onclick="renderGroup('A')">Guruh A</button>
+            <button id="btn-group-B" class="group-btn" onclick="renderGroup('B')">Guruh B</button>
+            <button id="btn-group-C" class="group-btn" onclick="renderGroup('C')">Guruh C</button>
+            <button id="btn-group-D" class="group-btn" onclick="renderGroup('D')">Guruh D</button>
         </div>
 
-        <div class="bg-slate-800/60 rounded-xl overflow-hidden border border-slate-700/50 shadow-lg">
-            <table class="w-full text-left text-xs">
-                <thead class="bg-slate-800 text-slate-400 uppercase text-[10px]">
+        <div class="card">
+            <table>
+                <thead>
                     <tr>
-                        <th class="py-2.5 px-3 w-8">#</th>
-                        <th class="py-2.5 px-2">Jamoa</th>
-                        <th class="py-2.5 px-2 text-center">O'</th>
-                        <th class="py-2.5 px-2 text-center">+/-</th>
-                        <th class="py-2.5 px-3 text-right">Och</th>
+                        <th class="col-pos">#</th>
+                        <th style="text-align: left; padding-left: 8px;">Jamoa</th>
+                        <th>O'</th>
+                        <th>+/-</th>
+                        <th class="col-pts">Och</th>
                     </tr>
                 </thead>
-                <tbody id="standings-body" class="divide-y divide-slate-700/40"></tbody>
+                <tbody id="standings-body"></tbody>
             </table>
         </div>
     </div>
 
     <!-- 2. To'purarlar bo'limi -->
-    <div id="section-scorers" class="hidden space-y-2"></div>
+    <div id="section-scorers" class="hidden">
+        <div class="card" id="scorers-body"></div>
+    </div>
 
-    <!-- 3. Keyingi o'yinlar bo'limi -->
-    <div id="section-matches" class="hidden space-y-4"></div>
+    <!-- 3. O'yinlar taqvimi bo'limi -->
+    <div id="section-matches" class="hidden">
+        <div id="matches-body"></div>
+    </div>
 
     <script>
         const tg = window.Telegram?.WebApp;
-        if (tg) tg.expand();
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
 
         const groupsData = {
             "A": [
@@ -153,61 +435,61 @@
         function switchMainTab(tab) {
             ['standings', 'scorers', 'matches'].forEach(t => {
                 document.getElementById(`section-${t}`).classList.add('hidden');
-                document.getElementById(`tab-${t}`).className = "flex-1 py-2 rounded-lg text-slate-400 transition";
+                document.getElementById(`tab-${t}`).classList.remove('active');
             });
             document.getElementById(`section-${tab}`).classList.remove('hidden');
-            document.getElementById(`tab-${tab}`).className = "flex-1 py-2 rounded-lg active-tab transition";
+            document.getElementById(`tab-${tab}`).classList.add('active');
         }
 
         function renderGroup(grp) {
             ['A', 'B', 'C', 'D'].forEach(g => {
                 const btn = document.getElementById(`btn-group-${g}`);
-                btn.className = (g === grp) 
-                    ? "px-4 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold transition"
-                    : "px-4 py-1.5 rounded-lg bg-slate-800 text-slate-400 text-xs font-bold transition";
+                if (g === grp) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
             });
 
             const tbody = document.getElementById('standings-body');
             tbody.innerHTML = groupsData[grp].map((item, idx) => `
-                <tr class="hover:bg-slate-700/30">
-                    <td class="py-2.5 px-3 font-semibold text-slate-400">${idx + 1}</td>
-                    <td class="py-2.5 px-2 font-medium text-white">${item.name}</td>
-                    <td class="py-2.5 px-2 text-center text-slate-300">${item.p}</td>
-                    <td class="py-2.5 px-2 text-center text-slate-400 font-mono">${item.diff}</td>
-                    <td class="py-2.5 px-3 text-right font-bold text-amber-400">${item.pts}</td>
+                <tr>
+                    <td class="col-pos ${idx < 2 ? 'top-pos' : ''}">${idx + 1}</td>
+                    <td class="col-team">${item.name}</td>
+                    <td style="color: var(--text-muted);">${item.p}</td>
+                    <td style="color: var(--text-muted); font-weight: 600;">${item.diff}</td>
+                    <td class="col-pts">${item.pts}</td>
                 </tr>
             `).join('');
         }
 
         function renderScorers() {
-            const container = document.getElementById('section-scorers');
+            const container = document.getElementById('scorers-body');
             container.innerHTML = scorersData.map((s, idx) => `
-                <div class="flex items-center justify-between bg-slate-800/60 p-3 rounded-xl border border-slate-700/40">
-                    <div class="flex items-center gap-3">
-                        <span class="w-6 text-center font-bold text-sm ${idx < 3 ? 'text-amber-400' : 'text-slate-400'}">${idx + 1}</span>
+                <div class="scorer-item">
+                    <div class="scorer-left">
+                        <span class="scorer-rank ${idx < 3 ? 'rank-gold' : ''}">${idx + 1}</span>
                         <div>
-                            <div class="font-bold text-sm text-white">${s.name}</div>
-                            <div class="text-[11px] text-slate-400">${s.team}</div>
+                            <div class="scorer-name">${s.name}</div>
+                            <div class="scorer-team">${s.team}</div>
                         </div>
                     </div>
-                    <div class="text-sm font-bold bg-blue-600/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-lg">
-                        ${s.goals} ⚽
-                    </div>
+                    <div class="scorer-goals">${s.goals} ⚽</div>
                 </div>
             `).join('');
         }
 
         function renderMatches() {
-            const container = document.getElementById('section-matches');
+            const container = document.getElementById('matches-body');
             container.innerHTML = matchesData.map(group => `
                 <div>
-                    <div class="text-xs font-bold text-slate-400 mb-2 tracking-wide uppercase">📅 ${group.date}</div>
-                    <div class="space-y-2">
+                    <div class="date-title">📅 ${group.date}</div>
+                    <div class="card">
                         ${group.list.map(m => `
-                            <div class="flex items-center justify-between bg-slate-800/60 px-4 py-2.5 rounded-xl border border-slate-700/40">
-                                <span class="text-xs font-semibold text-white flex-1">${m.t1}</span>
-                                <span class="px-2 py-0.5 bg-slate-700/70 text-[11px] font-mono rounded text-amber-400 font-bold mx-2">${m.time}</span>
-                                <span class="text-xs font-semibold text-white flex-1 text-right">${m.t2}</span>
+                            <div class="match-row">
+                                <span class="match-t">${m.t1}</span>
+                                <span class="match-time">${m.time}</span>
+                                <span class="match-t right">${m.t2}</span>
                             </div>
                         `).join('')}
                     </div>
