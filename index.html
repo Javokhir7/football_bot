@@ -19,6 +19,8 @@
             --c-2nd: #2ed573;
             --c-3rd: #1e90ff;
             --c-4th: #ffa502;
+            --pass-green: #10b981;
+            --drop-red: #ef4444;
         }
 
         * {
@@ -177,13 +179,40 @@
         }
 
         .col-pos {
-            width: 28px;
+            width: 48px;
             font-weight: 800;
-            color: var(--text-muted);
+            padding-left: 6px !important;
         }
 
-        .top-pos {
-            color: var(--ucl-cyan);
+        /* Positsiya Badge Dizaynlari */
+        .pos-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            padding: 3px 6px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            width: 100%;
+            max-width: 40px;
+        }
+
+        .pos-badge.qualified {
+            color: var(--pass-green);
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }
+
+        .pos-badge.eliminated {
+            color: var(--drop-red);
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+        }
+
+        .arrow-icon {
+            font-size: 9px;
+            line-height: 1;
         }
 
         .col-team {
@@ -414,7 +443,7 @@
         <p>Jonli turnir jadvali va o'yinlar taqvimi</p>
     </div>
 
-    <!-- Asosiy tablar: Play-off qo'shildi -->
+    <!-- Asosiy tablar -->
     <div class="main-tabs">
         <button id="tab-standings" class="main-tab-btn active" onclick="switchMainTab('standings')">Jadval</button>
         <button id="tab-playoff" class="main-tab-btn" onclick="switchMainTab('playoff')">Play-off</button>
@@ -462,22 +491,18 @@
                 <div class="bracket-col">
                     <div class="bracket-col-header">1/8 Final</div>
                     <div class="bracket-matches">
-                        <!-- Juftlik 1 -->
                         <div class="b-match">
                             <div class="b-slot pos-1">A1</div>
                             <div class="b-slot pos-4">B4</div>
                         </div>
-                        <!-- Juftlik 2 -->
                         <div class="b-match">
                             <div class="b-slot pos-2">C2</div>
                             <div class="b-slot pos-3">D3</div>
                         </div>
-                        <!-- Juftlik 3 -->
                         <div class="b-match">
                             <div class="b-slot pos-1">B1</div>
                             <div class="b-slot pos-4">A4</div>
                         </div>
-                        <!-- Juftlik 4 -->
                         <div class="b-match">
                             <div class="b-slot pos-2">D2</div>
                             <div class="b-slot pos-3">C3</div>
@@ -485,22 +510,18 @@
 
                         <div class="bracket-divider"></div>
 
-                        <!-- Juftlik 5 -->
                         <div class="b-match">
                             <div class="b-slot pos-1">C1</div>
                             <div class="b-slot pos-4">D4</div>
                         </div>
-                        <!-- Juftlik 6 -->
                         <div class="b-match">
                             <div class="b-slot pos-2">A2</div>
                             <div class="b-slot pos-3">B3</div>
                         </div>
-                        <!-- Juftlik 7 -->
                         <div class="b-match">
                             <div class="b-slot pos-1">D1</div>
                             <div class="b-slot pos-4">C4</div>
                         </div>
-                        <!-- Juftlik 8 -->
                         <div class="b-match">
                             <div class="b-slot pos-2">B2</div>
                             <div class="b-slot pos-3">A3</div>
@@ -690,15 +711,25 @@
             });
 
             const tbody = document.getElementById('standings-body');
-            tbody.innerHTML = groupsData[grp].map((item, idx) => `
+            tbody.innerHTML = groupsData[grp].map((item, idx) => {
+                const rank = idx + 1;
+                let badgeClass = rank <= 4 ? "qualified" : "eliminated";
+                let arrowIcon = rank <= 4 ? "▲" : "▼";
+
+                return `
                 <tr>
-                    <td class="col-pos ${idx < 2 ? 'top-pos' : ''}">${idx + 1}</td>
+                    <td class="col-pos">
+                        <span class="pos-badge ${badgeClass}">
+                            ${rank} <span class="arrow-icon">${arrowIcon}</span>
+                        </span>
+                    </td>
                     <td class="col-team">${item.name}</td>
                     <td style="color: var(--text-muted);">${item.p}</td>
                     <td style="color: var(--text-muted); font-weight: 600;">${item.diff}</td>
                     <td class="col-pts">${item.pts}</td>
                 </tr>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function renderScorers() {
