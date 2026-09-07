@@ -42,6 +42,42 @@
             min-height: 100vh;
         }
 
+        /* Admin Info Bar */
+        #admin-panel {
+            background: rgba(0, 242, 254, 0.08);
+            border: 1px dashed var(--ucl-cyan);
+            border-radius: 10px;
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .admin-live {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--ucl-cyan);
+            font-weight: 800;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+
         .header {
             text-align: center;
             padding: 10px 0 14px;
@@ -184,7 +220,6 @@
             padding-left: 6px !important;
         }
 
-        /* Positsiya Badge Dizaynlari */
         .pos-badge {
             display: inline-flex;
             align-items: center;
@@ -437,6 +472,17 @@
 </head>
 <body>
 
+    <!-- Faqat Admin (@mj24_7) kirganda ochiladigan monitoring paneli -->
+    <div id="admin-panel">
+        <div class="admin-live">
+            <span class="pulse-dot"></span>
+            <span>Admin Monitoring: faol</span>
+        </div>
+        <div style="color: #fff; font-weight: 700;">
+            Ko'rayotganlar: <span id="view-count" style="color: var(--ucl-cyan);">1</span> ta
+        </div>
+    </div>
+
     <div class="header">
         <div class="badge">JIZZAX</div>
         <h1>Ravalliq Chempionati</h1>
@@ -612,6 +658,53 @@
             tg.expand();
         }
 
+        // ================= ADMIN VA NOTIFICATION SOZLAMALARI =================
+        const BOT_TOKEN = "BOT_TOKENINGIZNI_SHU_YERGA_YOZING"; // BotFather bergan bot tokeningiz
+        const ADMIN_CHAT_ID = "SIZNING_RAQAMLI_TELEGRAM_ID";    // Masalan: 123456789 (nick emas, aynan raqamli ID bo'lishi shart)
+        const ADMIN_USERNAME = "mj24_7";
+
+        // Telegram foydalanuvchisi ma'lumotlarini olish
+        const currentUser = tg?.initDataUnsafe?.user;
+
+        // 1. Faqat admin kirganda yuqoridagi monitoring panelini ochish
+        if (currentUser && currentUser.username && currentUser.username.toLowerCase() === ADMIN_USERNAME.toLowerCase()) {
+            const adminPanel = document.getElementById('admin-panel');
+            if (adminPanel) adminPanel.style.display = 'flex';
+        }
+
+        // 2. Kirgan foydalanuvchi haqida adminga shaxsiy xabar yuborish
+        if (currentUser && BOT_TOKEN !== "BOT_TOKENINGIZNI_SHU_YERGA_YOZING") {
+            const sessionKey = `notified_${currentUser.id}`;
+            
+            // Har bir kishi kirganda sessiya davomida 1 marta yuboriladi (sahifa yangilansa qayta-qayta yozmasligi uchun)
+            if (!sessionStorage.getItem(sessionKey)) {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                const userUname = currentUser.username ? `@${currentUser.username}` : "yo'q";
+                const userFullName = `${currentUser.first_name || ''} ${currentUser.last_name || ''}`.trim();
+
+                const textMsg = `👤 <b>Yangi foydalanuvchi kirdi:</b>\n\n` +
+                                `⚽ <b>Ism:</b> ${userFullName}\n` +
+                                `🔗 <b>Username:</b> ${userUname}\n` +
+                                `🆔 <b>ID:</b> <code>${currentUser.id}</code>\n` +
+                                `⏰ <b>Vaqt:</b> ${timeStr}`;
+
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        chat_id: ADMIN_CHAT_ID,
+                        text: textMsg,
+                        parse_mode: "HTML"
+                    })
+                }).catch(err => console.error("Xabar yuborishda xato:", err));
+
+                sessionStorage.setItem(sessionKey, 'true');
+            }
+        }
+
+        // ================= MA'LUMOTLAR BAZASI =================
         const groupsData = {
             "A": [
                 { name: "Mahalla", p: 4, diff: "+9", pts: 9 },
