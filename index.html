@@ -9,12 +9,16 @@
     <style>
         :root {
             --ucl-dark: #04091e;
-            --ucl-card: rgba(14, 25, 59, 0.7);
+            --ucl-card: rgba(14, 25, 59, 0.75);
             --ucl-cyan: #00f2fe;
             --ucl-blue: #0066ff;
-            --ucl-border: rgba(0, 242, 254, 0.18);
+            --ucl-border: rgba(0, 242, 254, 0.2);
             --text-main: #ffffff;
             --text-muted: #8ea3bf;
+            --c-1st: #ff4757;
+            --c-2nd: #2ed573;
+            --c-3rd: #1e90ff;
+            --c-4th: #ffa502;
         }
 
         * {
@@ -32,13 +36,13 @@
                 radial-gradient(circle at 100% 100%, rgba(0, 242, 254, 0.15) 0%, transparent 50%);
             background-attachment: fixed;
             color: var(--text-main);
-            padding: 14px;
+            padding: 12px;
             min-height: 100vh;
         }
 
         .header {
             text-align: center;
-            padding: 12px 0 16px;
+            padding: 10px 0 14px;
         }
 
         .header .badge {
@@ -56,7 +60,7 @@
         }
 
         .header h1 {
-            font-size: 21px;
+            font-size: 20px;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -69,7 +73,6 @@
             font-size: 11px;
             color: var(--text-muted);
             margin-top: 4px;
-            letter-spacing: 0.5px;
         }
 
         /* Nav Tabs */
@@ -79,8 +82,9 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
             padding: 4px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             backdrop-filter: blur(10px);
+            gap: 4px;
         }
 
         .main-tab-btn {
@@ -89,11 +93,12 @@
             border: none;
             color: var(--text-muted);
             padding: 9px 0;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
             border-radius: 8px;
             transition: all 0.25s ease;
+            white-space: nowrap;
         }
 
         .main-tab-btn.active {
@@ -105,10 +110,8 @@
         /* Group Selector */
         .groups-bar {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             margin-bottom: 12px;
-            overflow-x: auto;
-            padding-bottom: 2px;
         }
 
         .group-btn {
@@ -140,7 +143,7 @@
             overflow: hidden;
             backdrop-filter: blur(12px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         /* Table */
@@ -201,7 +204,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 11px 14px;
+            padding: 10px 14px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -288,7 +291,114 @@
             font-size: 11px;
             font-weight: 700;
             color: #fff;
-            letter-spacing: 0.5px;
+        }
+
+        /* PLAY-OFF BRACKET STYLES */
+        .bracket-scroll {
+            overflow-x: auto;
+            padding: 10px 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .bracket-container {
+            display: flex;
+            gap: 16px;
+            min-width: 780px;
+            padding-bottom: 10px;
+        }
+
+        .bracket-col {
+            display: flex;
+            flex-direction: column;
+            width: 140px;
+            flex-shrink: 0;
+        }
+
+        .bracket-col-header {
+            text-align: center;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--ucl-cyan);
+            padding: 6px 0;
+            margin-bottom: 12px;
+            background: rgba(0, 242, 254, 0.08);
+            border-radius: 6px;
+            border: 1px solid var(--ucl-border);
+        }
+
+        .bracket-matches {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            height: 100%;
+            gap: 12px;
+        }
+
+        .b-match {
+            background: rgba(14, 25, 59, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .b-slot {
+            padding: 7px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            min-height: 32px;
+        }
+
+        .b-slot:last-child {
+            border-bottom: none;
+        }
+
+        .b-slot.empty {
+            color: #4a5d78;
+            font-style: italic;
+        }
+
+        .pos-1 { color: var(--c-1st); }
+        .pos-2 { color: var(--c-2nd); }
+        .pos-3 { color: var(--c-3rd); }
+        .pos-4 { color: var(--c-4th); }
+
+        .bracket-divider {
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+            margin: 6px 0;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            padding: 8px;
+            margin-bottom: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            background: rgba(0,0,0,0.25);
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .legend span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
         }
 
         .hidden {
@@ -299,14 +409,15 @@
 <body>
 
     <div class="header">
-        <div class="badge">JIZZAX</div>
+        <div class="badge">UEFA Champions League Edition</div>
         <h1>Ravalliq Chempionati</h1>
         <p>Jonli turnir jadvali va o'yinlar taqvimi</p>
     </div>
 
-    <!-- Asosiy tablar -->
+    <!-- Asosiy tablar: Play-off qo'shildi -->
     <div class="main-tabs">
         <button id="tab-standings" class="main-tab-btn active" onclick="switchMainTab('standings')">Jadval</button>
+        <button id="tab-playoff" class="main-tab-btn" onclick="switchMainTab('playoff')">Play-off</button>
         <button id="tab-scorers" class="main-tab-btn" onclick="switchMainTab('scorers')">To'purarlar</button>
         <button id="tab-matches" class="main-tab-btn" onclick="switchMainTab('matches')">O'yinlar</button>
     </div>
@@ -336,12 +447,139 @@
         </div>
     </div>
 
-    <!-- 2. To'purarlar bo'limi -->
+    <!-- 2. Play-off bo'limi -->
+    <div id="section-playoff" class="hidden">
+        <div class="legend">
+            <span><i class="dot" style="background: var(--c-1st);"></i> 1-o'rin</span>
+            <span><i class="dot" style="background: var(--c-2nd);"></i> 2-o'rin</span>
+            <span><i class="dot" style="background: var(--c-3rd);"></i> 3-o'rin</span>
+            <span><i class="dot" style="background: var(--c-4th);"></i> 4-o'rin</span>
+        </div>
+
+        <div class="bracket-scroll">
+            <div class="bracket-container">
+                <!-- 1/8 Final -->
+                <div class="bracket-col">
+                    <div class="bracket-col-header">1/8 Final</div>
+                    <div class="bracket-matches">
+                        <!-- Juftlik 1 -->
+                        <div class="b-match">
+                            <div class="b-slot pos-1">A1</div>
+                            <div class="b-slot pos-4">B4</div>
+                        </div>
+                        <!-- Juftlik 2 -->
+                        <div class="b-match">
+                            <div class="b-slot pos-2">C2</div>
+                            <div class="b-slot pos-3">D3</div>
+                        </div>
+                        <!-- Juftlik 3 -->
+                        <div class="b-match">
+                            <div class="b-slot pos-1">B1</div>
+                            <div class="b-slot pos-4">A4</div>
+                        </div>
+                        <!-- Juftlik 4 -->
+                        <div class="b-match">
+                            <div class="b-slot pos-2">D2</div>
+                            <div class="b-slot pos-3">C3</div>
+                        </div>
+
+                        <div class="bracket-divider"></div>
+
+                        <!-- Juftlik 5 -->
+                        <div class="b-match">
+                            <div class="b-slot pos-1">C1</div>
+                            <div class="b-slot pos-4">D4</div>
+                        </div>
+                        <!-- Juftlik 6 -->
+                        <div class="b-match">
+                            <div class="b-slot pos-2">A2</div>
+                            <div class="b-slot pos-3">B3</div>
+                        </div>
+                        <!-- Juftlik 7 -->
+                        <div class="b-match">
+                            <div class="b-slot pos-1">D1</div>
+                            <div class="b-slot pos-4">C4</div>
+                        </div>
+                        <!-- Juftlik 8 -->
+                        <div class="b-match">
+                            <div class="b-slot pos-2">B2</div>
+                            <div class="b-slot pos-3">A3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1/4 Final -->
+                <div class="bracket-col">
+                    <div class="bracket-col-header">1/4 Final</div>
+                    <div class="bracket-matches">
+                        <div class="b-match">
+                            <div class="b-slot empty">1/8 g'olibi</div>
+                            <div class="b-slot empty">1/8 g'olibi</div>
+                        </div>
+                        <div class="b-match">
+                            <div class="b-slot empty">1/8 g'olibi</div>
+                            <div class="b-slot empty">1/8 g'olibi</div>
+                        </div>
+                        <div class="bracket-divider"></div>
+                        <div class="b-match">
+                            <div class="b-slot empty">1/8 g'olibi</div>
+                            <div class="b-slot empty">1/8 g'olibi</div>
+                        </div>
+                        <div class="b-match">
+                            <div class="b-slot empty">1/8 g'olibi</div>
+                            <div class="b-slot empty">1/8 g'olibi</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1/2 Final -->
+                <div class="bracket-col">
+                    <div class="bracket-col-header">1/2 Final</div>
+                    <div class="bracket-matches">
+                        <div class="b-match">
+                            <div class="b-slot empty">1/4 g'olibi</div>
+                            <div class="b-slot empty">1/4 g'olibi</div>
+                        </div>
+                        <div class="bracket-divider"></div>
+                        <div class="b-match">
+                            <div class="b-slot empty">1/4 g'olibi</div>
+                            <div class="b-slot empty">1/4 g'olibi</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final -->
+                <div class="bracket-col">
+                    <div class="bracket-col-header">Final</div>
+                    <div class="bracket-matches">
+                        <div class="b-match" style="border-color: var(--ucl-border);">
+                            <div class="b-slot empty" style="color: #fff;">Finalchi 1</div>
+                            <div class="b-slot empty" style="color: #fff;">Finalchi 2</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chempion -->
+                <div class="bracket-col" style="width: 120px;">
+                    <div class="bracket-col-header" style="background: rgba(0, 242, 254, 0.2); border-color: var(--ucl-cyan);">Chempion</div>
+                    <div class="bracket-matches">
+                        <div class="b-match" style="border: 1px solid var(--ucl-cyan); text-align: center; background: rgba(0, 242, 254, 0.08);">
+                            <div class="b-slot empty" style="justify-content: center; color: var(--ucl-cyan); font-weight: 800; font-size: 13px;">
+                                🏆 G'olib
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. To'purarlar bo'limi -->
     <div id="section-scorers" class="hidden">
         <div class="card" id="scorers-body"></div>
     </div>
 
-    <!-- 3. O'yinlar taqvimi bo'limi -->
+    <!-- 4. O'yinlar taqvimi bo'limi -->
     <div id="section-matches" class="hidden">
         <div id="matches-body"></div>
     </div>
@@ -433,7 +671,7 @@
         ];
 
         function switchMainTab(tab) {
-            ['standings', 'scorers', 'matches'].forEach(t => {
+            ['standings', 'playoff', 'scorers', 'matches'].forEach(t => {
                 document.getElementById(`section-${t}`).classList.add('hidden');
                 document.getElementById(`tab-${t}`).classList.remove('active');
             });
