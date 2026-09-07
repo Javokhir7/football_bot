@@ -130,7 +130,7 @@ async def seed_demo_data():
         """, scorers)
 
         matches = [
-            ("9-Sentyabr (Chorshanba)", "19:00", "1986", "2005"),
+            ("9-Sentyabr (Chorshanba)", "19:40", "1986", "2005"),
             ("9-Sentyabr (Chorshanba)", "19:40", "2006", "2003"),
             ("9-Sentyabr (Chorshanba)", "20:20", "1997", "2007"),
             ("9-Sentyabr (Chorshanba)", "21:00", "1996-23", "1991-23"),
