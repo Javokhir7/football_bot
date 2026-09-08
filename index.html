@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
@@ -39,7 +39,6 @@
             background-attachment: fixed;
             color: var(--text-main);
             padding: 12px;
-            padding-bottom: 75px;
             min-height: 100vh;
         }
 
@@ -185,6 +184,7 @@
             padding-left: 6px !important;
         }
 
+        /* Positsiya Badge Dizaynlari */
         .pos-badge {
             display: inline-flex;
             align-items: center;
@@ -433,42 +433,6 @@
         .hidden {
             display: none;
         }
-
-        /* PASTKI DOIMIY GURUH TUGMASI (LAUNCH BAR) */
-        .bottom-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 10px 14px;
-            background: rgba(4, 9, 30, 0.92);
-            backdrop-filter: blur(12px);
-            border-top: 1px solid var(--ucl-border);
-            display: flex;
-            justify-content: center;
-            z-index: 100;
-        }
-
-        .launch-btn {
-            width: 100%;
-            max-width: 480px;
-            background: linear-gradient(135deg, var(--ucl-blue), var(--ucl-cyan));
-            color: #04091e;
-            border: none;
-            outline: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
     </style>
 </head>
 <body>
@@ -641,13 +605,6 @@
         <div id="matches-body"></div>
     </div>
 
-    <!-- Pastki qismdagi doimiy launch tugmasi -->
-    <div class="bottom-bar">
-        <button class="launch-btn" onclick="shareOrOpenInGroup()">
-            <span>⚡ Guruhga ulashish / Ochish</span>
-        </button>
-    </div>
-
     <script>
         const tg = window.Telegram?.WebApp;
         if (tg) {
@@ -655,59 +612,6 @@
             tg.expand();
         }
 
-        // ================= ADMIN MONITORING VA NOTIFICATION =================
-        const BOT_TOKEN = "8744135035:AAEqm6n6BUqbDSJAw3t_AOBoEj_Hm0lf0tc";
-        const BOT_USERNAME = "ravalliq_bot";
-        const ADMIN_USERNAME = "mj24_7";
-        const ADMIN_CHAT_ID = "SIZNING_RAQAMLI_TELEGRAM_ID"; // Telegram @userinfobot bergan raqamli ID ingiz
-
-        const currentUser = tg?.initDataUnsafe?.user;
-
-        // Begona odam kirganda adminga bildirishnoma yuborish
-        if (currentUser && ADMIN_CHAT_ID !== "SIZNING_RAQAMLI_TELEGRAM_ID") {
-            const currentUname = (currentUser.username || "").toLowerCase();
-            const isOwner = currentUname === ADMIN_USERNAME.toLowerCase();
-
-            if (!isOwner) {
-                const sessionKey = `tracked_open_${currentUser.id}`;
-                if (!sessionStorage.getItem(sessionKey)) {
-                    const now = new Date();
-                    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const userUname = currentUser.username ? `@${currentUser.username}` : "yo'q";
-                    const fullName = `${currentUser.first_name || ''} ${currentUser.last_name || ''}`.trim();
-
-                    const msg = `🚨 <b>Mini App ochildi!</b>\n\n` +
-                                `👤 <b>Foydalanuvchi:</b> ${fullName}\n` +
-                                `🔗 <b>Username:</b> ${userUname}\n` +
-                                `🆔 <b>ID:</b> <code>${currentUser.id}</code>\n` +
-                                `⏰ <b>Vaqt:</b> ${timeStr}`;
-
-                    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            chat_id: ADMIN_CHAT_ID,
-                            text: msg,
-                            parse_mode: "HTML"
-                        })
-                    }).catch(() => {});
-
-                    sessionStorage.setItem(sessionKey, 'true');
-                }
-            }
-        }
-
-        // Guruhda start yozmasdan ochish yoki ulashish funksiyasi
-        function shareOrOpenInGroup() {
-            const shareUrl = `https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app&text=🏆 Ravalliq Chempionati turnir jadvali va o'yinlar taqvimi!`;
-            if (tg && tg.openTelegramLink) {
-                tg.openTelegramLink(shareUrl);
-            } else {
-                window.open(shareUrl, '_blank');
-            }
-        }
-
-        // ================= MA'LUMOTLAR =================
         const groupsData = {
             "A": [
                 { name: "Mahalla", p: 4, diff: "+9", pts: 9 },
@@ -747,7 +651,7 @@
             ]
         };
 
-        const scorersData = [
+                const scorersData = [
             { name: "Jahongir", team: "1997", goals: 17 },
             { name: "Sardor", team: "2001", goals: 14 },
             { name: "Islom", team: "1993", goals: 13 },
@@ -878,6 +782,36 @@
             { name: "Gʻolib", team: "1996", goals: 1 }
         ];
 
+        function renderScorers() {
+            const container = document.getElementById('scorers-body');
+            
+            // O'yinchilarni aniq gollar bo'yicha saralash
+            scorersData.sort((a, b) => b.goals - a.goals);
+
+            let currentRank = 1;
+            container.innerHTML = scorersData.map((s, idx) => {
+                // Agar oldingi o'yinchidan kam gol urgan bo'lsa, tartib raqami yangilanadi
+                if (idx > 0 && s.goals < scorersData[idx - 1].goals) {
+                    currentRank = idx + 1;
+                }
+                const isTop3 = currentRank <= 3;
+
+                return `
+                <div class="scorer-item">
+                    <div class="scorer-left">
+                        <span class="scorer-rank ${isTop3 ? 'rank-gold' : ''}">${currentRank}</span>
+                        <div>
+                            <div class="scorer-name">${s.name}</div>
+                            <div class="scorer-team">${s.team}</div>
+                        </div>
+                    </div>
+                    <div class="scorer-goals">${s.goals} ⚽</div>
+                </div>
+                `;
+            }).join('');
+        }
+
+
         const matchesData = [
             {
                 date: "9-Sentyabr (Chorshanba)",
@@ -948,19 +882,10 @@
 
         function renderScorers() {
             const container = document.getElementById('scorers-body');
-            scorersData.sort((a, b) => b.goals - a.goals);
-
-            let currentRank = 1;
-            container.innerHTML = scorersData.map((s, idx) => {
-                if (idx > 0 && s.goals < scorersData[idx - 1].goals) {
-                    currentRank = idx + 1;
-                }
-                const isTop3 = currentRank <= 3;
-
-                return `
+            container.innerHTML = scorersData.map((s, idx) => `
                 <div class="scorer-item">
                     <div class="scorer-left">
-                        <span class="scorer-rank ${isTop3 ? 'rank-gold' : ''}">${currentRank}</span>
+                        <span class="scorer-rank ${idx < 3 ? 'rank-gold' : ''}">${idx + 1}</span>
                         <div>
                             <div class="scorer-name">${s.name}</div>
                             <div class="scorer-team">${s.team}</div>
@@ -968,8 +893,7 @@
                     </div>
                     <div class="scorer-goals">${s.goals} ⚽</div>
                 </div>
-                `;
-            }).join('');
+            `).join('');
         }
 
         function renderMatches() {
