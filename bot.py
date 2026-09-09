@@ -5,8 +5,8 @@ from aiogram.enums import ChatType
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
 BOT_TOKEN = "8744135035:AAEqm6n6BUqbDSJAw3t_AOBoEj_Hm0lf0tc"
-# Sayt manzilingiz oxiriga ?v=2 qo'shib qo'ydik, shunda keshdagi eski ro'yxat emas, yangi gollar ochiladi:
-MINI_APP_URL = "https://SIZNING-SAYTINGIZ.netlify.app?v=2"
+# Yangi ma'lumotlar keshda qolib ketmasligi uchun versiya belgisi qo'shildi
+MINI_APP_URL = "https://bucolic-sable-54bbe2.netlify.app/?v=3"
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
@@ -21,10 +21,9 @@ async def block_group(message: types.Message):
             pass
     return
 
-# 2. SHAXSIYDA START BOSILGANDA: Aynan siz so'ragan tugmani chiqarib beradi
+# 2. SHAXSIYDA START BOSILGANDA: Aynan o'sha tugmali xabarni chiqaradi
 @dp.message(CommandStart(), F.chat.type == ChatType.PRIVATE)
 async def private_start(message: types.Message):
-    # AYNAN O'SHA TUGMA KODI:
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
             [
@@ -38,7 +37,7 @@ async def private_start(message: types.Message):
 
     text = (
         "🏆 <b>Ravalliq Chempionati</b>\n\n"
-        "Turnir jadvali, to'purarlar va o'yinlar taqvimini ko'rish uchun pastdagi tugmani bosing:"
+        "Turnir jadvali, to'purarlar va o'yinlar taqvimi ko'rish uchun pastdagi tugmani bosing:"
     )
 
     await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
