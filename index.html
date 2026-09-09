@@ -250,7 +250,7 @@
         .scorer-rank {
             font-size: 13px;
             font-weight: 800;
-            width: 20px;
+            width: 26px;
             color: var(--text-muted);
         }
 
@@ -434,7 +434,6 @@
             display: none;
         }
 
-        /* PASTKI DOIMIY GURUH TUGMASI (LAUNCH BAR) */
         .bottom-bar {
             position: fixed;
             bottom: 0;
@@ -523,7 +522,6 @@
 
         <div class="bracket-scroll">
             <div class="bracket-container">
-                <!-- 1/8 Final -->
                 <div class="bracket-col">
                     <div class="bracket-col-header">1/8 Final</div>
                     <div class="bracket-matches">
@@ -543,9 +541,7 @@
                             <div class="b-slot pos-2">D2</div>
                             <div class="b-slot pos-3">C3</div>
                         </div>
-
                         <div class="bracket-divider"></div>
-
                         <div class="b-match">
                             <div class="b-slot pos-1">C1</div>
                             <div class="b-slot pos-4">D4</div>
@@ -565,7 +561,6 @@
                     </div>
                 </div>
 
-                <!-- 1/4 Final -->
                 <div class="bracket-col">
                     <div class="bracket-col-header">1/4 Final</div>
                     <div class="bracket-matches">
@@ -589,7 +584,6 @@
                     </div>
                 </div>
 
-                <!-- 1/2 Final -->
                 <div class="bracket-col">
                     <div class="bracket-col-header">1/2 Final</div>
                     <div class="bracket-matches">
@@ -605,7 +599,6 @@
                     </div>
                 </div>
 
-                <!-- Final -->
                 <div class="bracket-col">
                     <div class="bracket-col-header">Final</div>
                     <div class="bracket-matches">
@@ -616,7 +609,6 @@
                     </div>
                 </div>
 
-                <!-- Chempion -->
                 <div class="bracket-col" style="width: 120px;">
                     <div class="bracket-col-header" style="background: rgba(0, 242, 254, 0.2); border-color: var(--ucl-cyan);">Chempion</div>
                     <div class="bracket-matches">
@@ -641,7 +633,6 @@
         <div id="matches-body"></div>
     </div>
 
-    <!-- Pastki qismdagi doimiy launch tugmasi -->
     <div class="bottom-bar">
         <button class="launch-btn" onclick="shareOrOpenInGroup()">
             <span>⚡ Guruhga ulashish / Ochish</span>
@@ -655,46 +646,7 @@
             tg.expand();
         }
 
-        // ================= ADMIN MONITORING VA NOTIFICATION =================
-        const BOT_TOKEN = "8744135035:AAEqm6n6BUqbDSJAw3t_AOBoEj_Hm0lf0tc";
         const BOT_USERNAME = "ravalliq_bot";
-        const ADMIN_USERNAME = "mj24_7";
-        const ADMIN_CHAT_ID = "SIZNING_RAQAMLI_TELEGRAM_ID";
-
-        const currentUser = tg?.initDataUnsafe?.user;
-
-        if (currentUser && ADMIN_CHAT_ID !== "SIZNING_RAQAMLI_TELEGRAM_ID") {
-            const currentUname = (currentUser.username || "").toLowerCase();
-            const isOwner = currentUname === ADMIN_USERNAME.toLowerCase();
-
-            if (!isOwner) {
-                const sessionKey = `tracked_open_${currentUser.id}`;
-                if (!sessionStorage.getItem(sessionKey)) {
-                    const now = new Date();
-                    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const userUname = currentUser.username ? `@${currentUser.username}` : "yo'q";
-                    const fullName = `${currentUser.first_name || ''} ${currentUser.last_name || ''}`.trim();
-
-                    const msg = `🚨 <b>Mini App ochildi!</b>\n\n` +
-                                `👤 <b>Foydalanuvchi:</b> ${fullName}\n` +
-                                `🔗 <b>Username:</b> ${userUname}\n` +
-                                `🆔 <b>ID:</b> <code>${currentUser.id}</code>\n` +
-                                `⏰ <b>Vaqt:</b> ${timeStr}`;
-
-                    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            chat_id: ADMIN_CHAT_ID,
-                            text: msg,
-                            parse_mode: "HTML"
-                        })
-                    }).catch(() => {});
-
-                    sessionStorage.setItem(sessionKey, 'true');
-                }
-            }
-        }
 
         function shareOrOpenInGroup() {
             const shareUrl = `https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app&text=🏆 Ravalliq Chempionati turnir jadvali va o'yinlar taqvimi!`;
@@ -705,7 +657,6 @@
             }
         }
 
-        // ================= MA'LUMOTLAR =================
         const groupsData = {
             "A": [
                 { name: "Mahalla", p: 4, diff: "+9", pts: 9 },
@@ -889,7 +840,6 @@
             { name: "Sahob", team: "2001", goals: 1 }
         ];
 
-        // RASMDAGI ANIQ TAQVIM VA VAQTLAR
         const matchesData = [
             {
                 date: "9-Sentyabr (Chorshanba)",
@@ -958,21 +908,19 @@
             }).join('');
         }
 
+        // TARTIB RAQAMI KETMA-KET (1, 2, 3, 4...) CHIQADIGAN QILINDI
         function renderScorers() {
             const container = document.getElementById('scorers-body');
             scorersData.sort((a, b) => b.goals - a.goals);
 
-            let currentRank = 1;
             container.innerHTML = scorersData.map((s, idx) => {
-                if (idx > 0 && s.goals < scorersData[idx - 1].goals) {
-                    currentRank = idx + 1;
-                }
+                const currentRank = idx + 1;
                 const isTop3 = currentRank <= 3;
 
                 return `
                 <div class="scorer-item">
                     <div class="scorer-left">
-                        <span class="scorer-rank ${isTop3 ? 'rank-gold' : ''}">${currentRank}</span>
+                        <span class="scorer-rank ${isTop3 ? 'rank-gold' : ''}">${currentRank}.</span>
                         <div>
                             <div class="scorer-name">${s.name}</div>
                             <div class="scorer-team">${s.team}</div>
