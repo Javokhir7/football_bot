@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
@@ -659,11 +659,10 @@
         const BOT_TOKEN = "8744135035:AAEqm6n6BUqbDSJAw3t_AOBoEj_Hm0lf0tc";
         const BOT_USERNAME = "ravalliq_bot";
         const ADMIN_USERNAME = "mj24_7";
-        const ADMIN_CHAT_ID = "SIZNING_RAQAMLI_TELEGRAM_ID"; // Telegram @userinfobot bergan raqamli ID ingiz
+        const ADMIN_CHAT_ID = "SIZNING_RAQAMLI_TELEGRAM_ID";
 
         const currentUser = tg?.initDataUnsafe?.user;
 
-        // Begona odam kirganda adminga bildirishnoma yuborish
         if (currentUser && ADMIN_CHAT_ID !== "SIZNING_RAQAMLI_TELEGRAM_ID") {
             const currentUname = (currentUser.username || "").toLowerCase();
             const isOwner = currentUname === ADMIN_USERNAME.toLowerCase();
@@ -697,7 +696,6 @@
             }
         }
 
-        // Guruhda start yozmasdan ochish yoki ulashish funksiyasi
         function shareOrOpenInGroup() {
             const shareUrl = `https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app&text=🏆 Ravalliq Chempionati turnir jadvali va o'yinlar taqvimi!`;
             if (tg && tg.openTelegramLink) {
@@ -747,7 +745,6 @@
             ]
         };
 
-        // YANGILANGAN VA JAMLANGAN TO'PURARLAR RO'YXATI (Barcha Mahalla nomlari birlashtirildi)
         const scorersData = [
             { name: "Jahongir", team: "1997", goals: 17 },
             { name: "Botir", team: "2003", goals: 17 },
@@ -774,6 +771,7 @@
             { name: "Sherzod", team: "1991-23", goals: 6 },
             { name: "Diyor", team: "1991-23", goals: 6 },
             { name: "Muhammadamen", team: "2000", goals: 6 },
+            { name: "Nodir", team: "1996", goals: 6 },
             { name: "Begzod", team: "1993", goals: 5 },
             { name: "Begzod", team: "1996-23", goals: 5 },
             { name: "Otabek", team: "2006", goals: 5 },
@@ -812,7 +810,6 @@
             { name: "Zahiriddin", team: "1998", goals: 3 },
             { name: "Diyor", team: "1993", goals: 3 },
             { name: "Isroil", team: "2005", goals: 3 },
-            { name: "Nodir", team: "1996", goals: 6 },
             { name: "Ruslan", team: "2006", goals: 3 },
             { name: "Sobit", team: "1988", goals: 3 },
             { name: "Uchqun", team: "1994", goals: 3 },
@@ -892,29 +889,30 @@
             { name: "Sahob", team: "2001", goals: 1 }
         ];
 
+        // RASMDAGI ANIQ TAQVIM VA VAQTLAR
         const matchesData = [
             {
                 date: "9-Sentyabr (Chorshanba)",
                 list: [
-                    { t1: "1986", t2: "2005", time: "19:00" },
-                    { t1: "2006", t2: "2003", time: "19:40" },
-                    { t1: "1997", t2: "2007", time: "20:20" },
-                    { t1: "1996-23", t2: "1991-23", time: "21:00" },
-                    { t1: "1991", t2: "1998-v", time: "21:40" },
-                    { t1: "2008-23", t2: "1992-23", time: "22:20" },
-                    { t1: "1995", t2: "1998", time: "23:00" }
+                    { t1: "1986", t2: "2005", time: "18:30" },
+                    { t1: "Mahalla", t2: "2004", time: "19:10" },
+                    { t1: "2006", t2: "2003", time: "19:50" },
+                    { t1: "2003-12", t2: "1991-23", time: "20:30" },
+                    { t1: "1991", t2: "1998-v", time: "21:10" },
+                    { t1: "2008-23", t2: "1992-23", time: "21:50" },
+                    { t1: "1995", t2: "1998", time: "22:30" }
                 ]
             },
             {
                 date: "11-Sentyabr (Juma)",
                 list: [
-                    { t1: "1991", t2: "2001", time: "19:00" },
-                    { t1: "2000", t2: "2008-23", time: "19:40" },
-                    { t1: "Mahalla", t2: "2004", time: "20:20" },
-                    { t1: "1991-23", t2: "2003-12", time: "21:00" },
-                    { t1: "2005", t2: "2002", time: "21:40" },
-                    { t1: "Obod", t2: "2007", time: "22:20" },
-                    { t1: "1993", t2: "2003", time: "23:00" }
+                    { t1: "1991", t2: "2001", time: "18:30" },
+                    { t1: "2000", t2: "2008-23", time: "19:10" },
+                    { t1: "1991-23", t2: "1996-23", time: "19:50" },
+                    { t1: "2005", t2: "2002", time: "20:30" },
+                    { t1: "Obod", t2: "2007", time: "21:10" },
+                    { t1: "1993", t2: "2003", time: "21:50" },
+                    { t1: "1997", t2: "2007", time: "22:30" }
                 ]
             }
         ];
