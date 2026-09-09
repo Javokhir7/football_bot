@@ -6,7 +6,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
 BOT_TOKEN = "8744135035:AAEqm6n6BUqbDSJAw3t_AOBoEj_Hm0lf0tc"
 # Yangi ma'lumotlar keshda qolib ketmasligi uchun versiya belgisi qo'shildi
-MINI_APP_URL = "https://bucolic-sable-54bbe2.netlify.app/?v=3"
+MINI_APP_URL = "https://bucolic-sable-54bbe2.netlify.app/?v=5"
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
