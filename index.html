@@ -21,6 +21,7 @@
             --c-4th: #ffa502;
             --pass-green: #10b981;
             --drop-red: #ef4444;
+            --gold: #ffd700;
         }
 
         * {
@@ -228,7 +229,7 @@
             font-size: 13px;
         }
 
-        /* QIDIRUV QATORI (SEARCH BAR) */
+        /* QIDIRUV QATORI */
         .search-box {
             position: relative;
             margin-bottom: 12px;
@@ -325,6 +326,76 @@
             color: var(--text-muted);
             font-size: 12px;
             font-weight: 600;
+        }
+
+        /* MVP BO'LIMI DIZAYNI */
+        .mvp-card {
+            background: linear-gradient(180deg, rgba(20, 35, 80, 0.85) 0%, rgba(8, 14, 38, 0.95) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 16px;
+            padding: 20px 14px;
+            text-align: center;
+            box-shadow: 0 12px 35px rgba(255, 215, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mvp-top-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #ffd700, #ff9900);
+            color: #04091e;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            margin-bottom: 12px;
+        }
+
+        .mvp-desc {
+            font-size: 13px;
+            font-weight: 700;
+            color: #e2e8f0;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .mvp-img-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: 6px auto 14px;
+            border-radius: 14px;
+            padding: 4px;
+            background: linear-gradient(135deg, #ffd700, #00f2fe);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .mvp-img {
+            width: 100%;
+            max-width: 280px;
+            display: block;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .mvp-name {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.4);
+        }
+
+        .mvp-team-sub {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--ucl-cyan);
+            margin-top: 4px;
         }
 
         /* Matches */
@@ -526,11 +597,12 @@
         <p>Jonli turnir jadvali va o'yinlar taqvimi</p>
     </div>
 
-    <!-- Asosiy tablar -->
+    <!-- Asosiy tablar: To'purarlar va O'yinlar orasiga MVP joylashtirildi -->
     <div class="main-tabs">
         <button id="tab-standings" class="main-tab-btn active" onclick="switchMainTab('standings')">Jadval</button>
         <button id="tab-playoff" class="main-tab-btn" onclick="switchMainTab('playoff')">Play-off</button>
         <button id="tab-scorers" class="main-tab-btn" onclick="switchMainTab('scorers')">To'purarlar</button>
+        <button id="tab-mvp" class="main-tab-btn" onclick="switchMainTab('mvp')">⭐ MVP</button>
         <button id="tab-matches" class="main-tab-btn" onclick="switchMainTab('matches')">O'yinlar</button>
     </div>
 
@@ -673,7 +745,6 @@
 
     <!-- 3. To'purarlar bo'limi -->
     <div id="section-scorers" class="hidden">
-        <!-- QIDIRUV TUGMASI VA INPUTI -->
         <div class="search-box">
             <span class="search-icon">🔍</span>
             <input type="text" id="scorer-search-input" class="search-input" placeholder="Ism yoki jamoani qidiring (masalan: Botir, 1994...)" oninput="filterScorers()">
@@ -681,7 +752,23 @@
         <div class="card" id="scorers-body"></div>
     </div>
 
-    <!-- 4. O'yinlar taqvimi bo'limi -->
+    <!-- 4. MVP bo'limi -->
+    <div id="section-mvp" class="hidden">
+        <div class="mvp-card">
+            <div class="mvp-top-badge">🏆 Turning eng yaxshisi</div>
+            <p class="mvp-desc">
+                O'tgan turning eng yaxshi o'yinchisi <br>
+                <span style="color: var(--ucl-cyan);">1988 yillar jamoasi a'zosi</span>
+            </p>
+            <div class="mvp-img-wrapper">
+                <img src="mvp.jpg" alt="Soatov Sardor" class="mvp-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=800&auto=format&fit=crop';">
+            </div>
+            <div class="mvp-name">Soatov Sardor</div>
+            <div class="mvp-team-sub">⚽ 1988 Jamoasi</div>
+        </div>
+    </div>
+
+    <!-- 5. O'yinlar taqvimi bo'limi -->
     <div id="section-matches" class="hidden">
         <div id="matches-body"></div>
     </div>
@@ -921,7 +1008,7 @@
         ];
 
         function switchMainTab(tab) {
-            ['standings', 'playoff', 'scorers', 'matches'].forEach(t => {
+            ['standings', 'playoff', 'scorers', 'mvp', 'matches'].forEach(t => {
                 document.getElementById(`section-${t}`).classList.add('hidden');
                 document.getElementById(`tab-${t}`).classList.remove('active');
             });
@@ -961,11 +1048,8 @@
             }).join('');
         }
 
-        // QIDIRUV BILAN ISHLAYDIGAN TO'PURARLAR FUNKSIYASI
         function renderScorers(items = null) {
             const container = document.getElementById('scorers-body');
-            
-            // Dastlabki asosiy ro'yxatni saralash va har biriga umumiy reytingdagi aniq o'rnini yozish
             scorersData.sort((a, b) => b.goals - a.goals);
             const rankedList = scorersData.map((s, idx) => ({ ...s, overallRank: idx + 1 }));
 
@@ -993,10 +1077,8 @@
             }).join('');
         }
 
-        // ISM YOKI JAMOA BO'YICHA FILTRLASH FUNKSIYASI
         function filterScorers() {
             const query = document.getElementById('scorer-search-input').value.toLowerCase().trim();
-            
             scorersData.sort((a, b) => b.goals - a.goals);
             const rankedList = scorersData.map((s, idx) => ({ ...s, overallRank: idx + 1 }));
 
