@@ -9,7 +9,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
 BOT_TOKEN = "8744135035:AAEqm6n6BUqbDSJAw3t_AOBoEj_Hm0lf0tc"
 MINI_APP_URL = "https://javokhir7.github.io/football_bot/?v=6"
-ADMIN_ID = 314323733
+ADMIN_ID = 314323733,5394390497
 
 # GitHub API sozlamalari
 GITHUB_TOKEN = "ghp_" + "CadIiSkt0R65ZtT2y7xofAdr5ViwPk0ap3cZ"
