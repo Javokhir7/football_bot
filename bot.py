@@ -28,21 +28,25 @@ async def get_github_data():
     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{FILE_PATH}"
     headers = {
         "Authorization": f"Bearer {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github+json"
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "TelegramBot"
     }
     async with aiohttp.ClientSession() as session:
         async with session.get(url, headers=headers) as resp:
             if resp.status == 200:
                 res_data = await resp.json()
                 content = base64.b64decode(res_data["content"]).decode("utf-8")
-                return json.loads(content), res_data["sha"]
-            return None, None
+                return json.loads(content), res_data["sha"], None
+            else:
+                err_text = await resp.text()
+                return None, None, f"Status: {resp.status} | {err_text[:120]}"
 
 async def update_github_data(new_data, sha, commit_msg):
     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{FILE_PATH}"
     headers = {
         "Authorization": f"Bearer {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github+json"
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "TelegramBot"
     }
     content_str = json.dumps(new_data, ensure_ascii=False, indent=2)
     encoded_content = base64.b64encode(content_str.encode("utf-8")).decode("utf-8")
@@ -145,9 +149,10 @@ async def add_match_result(message: types.Message):
     team2 = parts[4]
 
     wait_msg = await message.answer("⏳ GitHub'ga yozilmoqda...")
-    data, sha = await get_github_data()
+    data, sha, err = await get_github_data()
     if not data or "groups" not in data:
-        await wait_msg.edit_text("❌ Xatolik: data.json fayli yuklanmadi.")
+        error_info = f"\nSabab: <code>{err}</code>" if err else ""
+        await wait_msg.edit_text(f"❌ Xatolik: data.json fayli yuklanmadi.{error_info}", parse_mode="HTML")
         return
 
     # Jamoalarni topish va hisoblash
@@ -209,9 +214,10 @@ async def add_goal(message: types.Message):
         return
 
     wait_msg = await message.answer("⏳ To'purarlar yangilanmoqda...")
-    data, sha = await get_github_data()
+    data, sha, err = await get_github_data()
     if not data or "scorers" not in data:
-        await wait_msg.edit_text("❌ data.json yuklanmadi.")
+        error_info = f"\nSabab: <code>{err}</code>" if err else ""
+        await wait_msg.edit_text(f"❌ data.json yuklanmadi.{error_info}", parse_mode="HTML")
         return
 
     found = False
