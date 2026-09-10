@@ -79,7 +79,6 @@
             margin-top: 4px;
         }
 
-        /* Nav Tabs */
         .main-tabs {
             display: flex;
             background: rgba(10, 20, 50, 0.85);
@@ -111,7 +110,6 @@
             box-shadow: 0 4px 15px rgba(0, 102, 255, 0.4);
         }
 
-        /* Group Selector */
         .groups-bar {
             display: flex;
             gap: 6px;
@@ -139,7 +137,6 @@
             box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
         }
 
-        /* Card Container */
         .card {
             background: var(--ucl-card);
             border: 1px solid var(--ucl-border);
@@ -150,7 +147,6 @@
             margin-bottom: 14px;
         }
 
-        /* Table */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -229,7 +225,6 @@
             font-size: 13px;
         }
 
-        /* QIDIRUV QATORI */
         .search-box {
             position: relative;
             margin-bottom: 12px;
@@ -269,7 +264,6 @@
             pointer-events: none;
         }
 
-        /* Scorers */
         .scorer-item {
             display: flex;
             align-items: center;
@@ -328,7 +322,6 @@
             font-weight: 600;
         }
 
-        /* MVP BO'LIMI */
         .mvp-card {
             background: linear-gradient(180deg, rgba(20, 35, 80, 0.85) 0%, rgba(8, 14, 38, 0.95) 100%);
             border: 1px solid rgba(255, 215, 0, 0.4);
@@ -398,7 +391,6 @@
             margin-top: 4px;
         }
 
-        /* Matches */
         .date-title {
             font-size: 11px;
             font-weight: 800;
@@ -441,7 +433,6 @@
             color: #fff;
         }
 
-        /* PLAY-OFF BRACKET STYLES */
         .bracket-scroll {
             overflow-x: auto;
             padding: 10px 4px;
@@ -683,38 +674,20 @@
                 <div class="bracket-col">
                     <div class="bracket-col-header">1/4 Final</div>
                     <div class="bracket-matches">
-                        <div class="b-match">
-                            <div class="b-slot empty">1/8 g'olibi</div>
-                            <div class="b-slot empty">1/8 g'olibi</div>
-                        </div>
-                        <div class="b-match">
-                            <div class="b-slot empty">1/8 g'olibi</div>
-                            <div class="b-slot empty">1/8 g'olibi</div>
-                        </div>
+                        <div class="b-match"><div class="b-slot empty">1/8 g'olibi</div><div class="b-slot empty">1/8 g'olibi</div></div>
+                        <div class="b-match"><div class="b-slot empty">1/8 g'olibi</div><div class="b-slot empty">1/8 g'olibi</div></div>
                         <div class="bracket-divider"></div>
-                        <div class="b-match">
-                            <div class="b-slot empty">1/8 g'olibi</div>
-                            <div class="b-slot empty">1/8 g'olibi</div>
-                        </div>
-                        <div class="b-match">
-                            <div class="b-slot empty">1/8 g'olibi</div>
-                            <div class="b-slot empty">1/8 g'olibi</div>
-                        </div>
+                        <div class="b-match"><div class="b-slot empty">1/8 g'olibi</div><div class="b-slot empty">1/8 g'olibi</div></div>
+                        <div class="b-match"><div class="b-slot empty">1/8 g'olibi</div><div class="b-slot empty">1/8 g'olibi</div></div>
                     </div>
                 </div>
 
                 <div class="bracket-col">
                     <div class="bracket-col-header">1/2 Final</div>
                     <div class="bracket-matches">
-                        <div class="b-match">
-                            <div class="b-slot empty">1/4 g'olibi</div>
-                            <div class="b-slot empty">1/4 g'olibi</div>
-                        </div>
+                        <div class="b-match"><div class="b-slot empty">1/4 g'olibi</div><div class="b-slot empty">1/4 g'olibi</div></div>
                         <div class="bracket-divider"></div>
-                        <div class="b-match">
-                            <div class="b-slot empty">1/4 g'olibi</div>
-                            <div class="b-slot empty">1/4 g'olibi</div>
-                        </div>
+                        <div class="b-match"><div class="b-slot empty">1/4 g'olibi</div><div class="b-slot empty">1/4 g'olibi</div></div>
                     </div>
                 </div>
 
@@ -786,8 +759,6 @@
         }
 
         const BOT_USERNAME = "ravalliq_bot";
-        let groupsData = {};
-        let scorersData = [];
 
         function shareOrOpenInGroup() {
             const shareUrl = `https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app&text=🏆 Ravalliq Chempionati turnir jadvali va o'yinlar taqvimi!`;
@@ -797,6 +768,191 @@
                 window.open(shareUrl, '_blank');
             }
         }
+
+        // Barcha jamoalar va ochkolar bevosita HTML ichida (yo'qolib ketmaydi):
+        let groupsData = {
+            "A": [
+                { name: "Mahalla", p: 4, diff: 9, pts: 9 },
+                { name: "2006", p: 4, diff: 0, pts: 9 },
+                { name: "1993", p: 4, diff: 10, pts: 7 },
+                { name: "2003", p: 3, diff: 10, pts: 6 },
+                { name: "2009", p: 5, diff: -10, pts: 6 },
+                { name: "2004", p: 5, diff: -6, pts: 5 },
+                { name: "2009-23", p: 5, diff: -13, pts: 1 }
+            ],
+            "B": [
+                { name: "1996-23", p: 4, diff: 5, pts: 9 },
+                { name: "2002-23", p: 5, diff: 3, pts: 7 },
+                { name: "1986", p: 4, diff: -2, pts: 6 },
+                { name: "2005", p: 4, diff: -10, pts: 6 },
+                { name: "2003-12", p: 4, diff: 5, pts: 4 },
+                { name: "1991-23", p: 3, diff: 0, pts: 4 },
+                { name: "2002", p: 4, diff: -1, pts: 4 }
+            ],
+            "C": [
+                { name: "1988", p: 5, diff: 10, pts: 10 },
+                { name: "2001", p: 4, diff: 6, pts: 10 },
+                { name: "1991", p: 3, diff: 12, pts: 9 },
+                { name: "1998-v", p: 4, diff: 6, pts: 6 },
+                { name: "1992-23", p: 4, diff: -7, pts: 4 },
+                { name: "2000", p: 4, diff: -14, pts: 1 },
+                { name: "2008-23", p: 4, diff: -13, pts: 0 }
+            ],
+            "D": [
+                { name: "1997", p: 4, diff: 22, pts: 12 },
+                { name: "1994", p: 5, diff: 11, pts: 10 },
+                { name: "1995", p: 4, diff: 9, pts: 7 },
+                { name: "1998", p: 4, diff: 3, pts: 7 },
+                { name: "2007", p: 4, diff: -2, pts: 4 },
+                { name: "Obod-98", p: 4, diff: -10, pts: 3 },
+                { name: "1996", p: 5, diff: -33, pts: 0 }
+            ]
+        };
+
+        // Barcha to'purarlar ro'yxati (hech qachon bo'shab qolmaydi):
+        let scorersData = [
+            { name: "Jahongir", team: "1997", goals: 17 },
+            { name: "Botir", team: "2003", goals: 17 },
+            { name: "Sardor", team: "2001", goals: 15 },
+            { name: "Islom", team: "1993", goals: 13 },
+            { name: "Botir", team: "1998-v", goals: 12 },
+            { name: "Xolyor", team: "2002-23", goals: 12 },
+            { name: "Abdulaziz", team: "2007", goals: 11 },
+            { name: "Farrux", team: "2002-23", goals: 10 },
+            { name: "Lochin", team: "1998", goals: 9 },
+            { name: "Adham", team: "1994", goals: 9 },
+            { name: "Ravshan", team: "2005", goals: 8 },
+            { name: "Ulugʻbek", team: "2003-12", goals: 8 },
+            { name: "Behruz", team: "2009", goals: 8 },
+            { name: "Maruf", team: "Mahalla", goals: 7 },
+            { name: "Ibrohim", team: "2009-23", goals: 7 },
+            { name: "Sardor", team: "1988", goals: 7 },
+            { name: "Sherzod", team: "1998", goals: 7 },
+            { name: "Karimjon", team: "2004", goals: 7 },
+            { name: "Otabek", team: "1994", goals: 6 },
+            { name: "Jahongir", team: "2003-12", goals: 6 },
+            { name: "Ahmadjon", team: "1996-23", goals: 6 },
+            { name: "Gʻulom", team: "Mahalla", goals: 6 },
+            { name: "Sherzod", team: "1991-23", goals: 6 },
+            { name: "Diyor", team: "1991-23", goals: 6 },
+            { name: "Muhammadamen", team: "2000", goals: 6 },
+            { name: "Nodir", team: "1996", goals: 6 },
+            { name: "Begzod", team: "1993", goals: 5 },
+            { name: "Begzod", team: "1996-23", goals: 5 },
+            { name: "Otabek", team: "2006", goals: 5 },
+            { name: "Javohir", team: "2008-23", goals: 5 },
+            { name: "Javohir", team: "2009-23", goals: 5 },
+            { name: "Ilhom", team: "1991", goals: 5 },
+            { name: "Muhammad", team: "1994", goals: 5 },
+            { name: "Sardor", team: "Obod -1998", goals: 5 },
+            { name: "Jasur", team: "Obod -1998", goals: 5 },
+            { name: "Ixtiyor", team: "2003", goals: 5 },
+            { name: "Shuxrat", team: "Mahalla", goals: 4 },
+            { name: "Ismoil", team: "Mahalla", goals: 4 },
+            { name: "Farrux", team: "2002", goals: 4 },
+            { name: "Tohir", team: "1998-v", goals: 4 },
+            { name: "Shaxboz", team: "1998-v", goals: 4 },
+            { name: "Azim", team: "1998-v", goals: 4 },
+            { name: "Jahon", team: "1988", goals: 4 },
+            { name: "Shuxrat", team: "1988", goals: 4 },
+            { name: "Asadbek", team: "2004", goals: 4 },
+            { name: "Elyor", team: "1986", goals: 4 },
+            { name: "Oybek", team: "1986", goals: 4 },
+            { name: "Begali", team: "2007", goals: 4 },
+            { name: "Sarvar", team: "1991", goals: 4 },
+            { name: "Javohir", team: "1994", goals: 4 },
+            { name: "Adham", team: "1992-23", goals: 4 },
+            { name: "Rustam", team: "Obod -1998", goals: 4 },
+            { name: "Muhammad", team: "2004", goals: 4 },
+            { name: "Kamol", team: "2004", goals: 4 },
+            { name: "Bekki", team: "1996-23", goals: 4 },
+            { name: "Yorqin", team: "2003-12", goals: 4 },
+            { name: "Siroj", team: "Obod -1998", goals: 4 },
+            { name: "Javohir", team: "2002-23", goals: 3 },
+            { name: "Xurshid", team: "2002-23", goals: 3 },
+            { name: "Sardor", team: "1997", goals: 3 },
+            { name: "Javohir", team: "1997", goals: 3 },
+            { name: "Zahiriddin", team: "1998", goals: 3 },
+            { name: "Diyor", team: "1993", goals: 3 },
+            { name: "Isroil", team: "2005", goals: 3 },
+            { name: "Ruslan", team: "2006", goals: 3 },
+            { name: "Sobit", team: "1988", goals: 3 },
+            { name: "Uchqun", team: "1994", goals: 3 },
+            { name: "Gʻolib", team: "1996", goals: 3 },
+            { name: "Oʻtkir", team: "1998", goals: 3 },
+            { name: "Jalol", team: "2002", goals: 3 },
+            { name: "Sunnat", team: "Mahalla", goals: 2 },
+            { name: "Anvar", team: "2000", goals: 2 },
+            { name: "Sohib", team: "2000", goals: 2 },
+            { name: "Sindor", team: "2000", goals: 2 },
+            { name: "Mansur", team: "2000", goals: 2 },
+            { name: "Ixtiyor", team: "1992-23", goals: 2 },
+            { name: "Sahob", team: "1992-23", goals: 2 },
+            { name: "Azamat", team: "1992-23", goals: 2 },
+            { name: "Rahimjon", team: "2003-12", goals: 2 },
+            { name: "Javlon", team: "2003-12", goals: 2 },
+            { name: "Ismoil", team: "2008-23", goals: 2 },
+            { name: "Jamshid", team: "2008-23", goals: 2 },
+            { name: "Diyor", team: "1997", goals: 2 },
+            { name: "Sanjar", team: "1997", goals: 2 },
+            { name: "Doniyor", team: "1998 Obod", goals: 2 },
+            { name: "Furqat", team: "1998 Obod", goals: 2 },
+            { name: "Bunyod", team: "2009-23", goals: 2 },
+            { name: "Shahzod", team: "1993", goals: 2 },
+            { name: "Ozod", team: "2006", goals: 2 },
+            { name: "Bahodir", team: "2006", goals: 2 },
+            { name: "Norchi", team: "1986", goals: 2 },
+            { name: "Muhammadali", team: "1991-23", goals: 2 },
+            { name: "Oxun", team: "1991-23", goals: 2 },
+            { name: "Asilbek", team: "1994", goals: 2 },
+            { name: "Sanjar", team: "1994", goals: 2 },
+            { name: "Sharof", team: "1994", goals: 2 },
+            { name: "Yorqin", team: "1994", goals: 2 },
+            { name: "Azamat", team: "1995", goals: 2 },
+            { name: "Doston", team: "1995", goals: 2 },
+            { name: "Asil", team: "1995", goals: 2 },
+            { name: "Sardor", team: "2003", goals: 2 },
+            { name: "Jahongir", team: "2001", goals: 2 },
+            { name: "Suvanqul", team: "Mahalla", goals: 1 },
+            { name: "Shavkat", team: "Mahalla", goals: 1 },
+            { name: "Otabek", team: "1998-v", goals: 1 },
+            { name: "Nemat", team: "1988", goals: 1 },
+            { name: "Maruf", team: "1988", goals: 1 },
+            { name: "Yunus", team: "2002", goals: 1 },
+            { name: "Xamid", team: "2002", goals: 1 },
+            { name: "Jasur", team: "2002", goals: 1 },
+            { name: "Gʻayrat", team: "2002", goals: 1 },
+            { name: "Suxrob", team: "2002", goals: 1 },
+            { name: "Muhammad", team: "2002-23", goals: 1 },
+            { name: "Aziz", team: "2008-23", goals: 1 },
+            { name: "Azamat", team: "2008-23", goals: 1 },
+            { name: "Sobir", team: "2008-23", goals: 1 },
+            { name: "Jamshid", team: "2009", goals: 1 },
+            { name: "Islom", team: "2009", goals: 1 },
+            { name: "Sardor", team: "2009", goals: 1 },
+            { name: "Abbos", team: "1997", goals: 1 },
+            { name: "Sahob", team: "1997", goals: 1 },
+            { name: "Nodir", team: "1998 Obod", goals: 1 },
+            { name: "Behruz", team: "2009-23", goals: 1 },
+            { name: "Asil", team: "2009-23", goals: 1 },
+            { name: "Ozod", team: "2009-23", goals: 1 },
+            { name: "Ulugʻbek", team: "1993", goals: 1 },
+            { name: "Shoxjaxon", team: "2005", goals: 1 },
+            { name: "Fazliddin", team: "2005", goals: 1 },
+            { name: "Laziz", team: "1986", goals: 1 },
+            { name: "Sobir", team: "1986", goals: 1 },
+            { name: "Husan", team: "1986", goals: 1 },
+            { name: "Akmal", team: "1991-23", goals: 1 },
+            { name: "Oybek", team: "1996-23", goals: 1 },
+            { name: "Iskandar", team: "2007", goals: 1 },
+            { name: "Islom", team: "2007", goals: 1 },
+            { name: "Izzat", team: "1991", goals: 1 },
+            { name: "Muhammad", team: "1991", goals: 1 },
+            { name: "Maftun", team: "1991", goals: 1 },
+            { name: "Ozod", team: "2004", goals: 1 },
+            { name: "Bunyod", team: "1992-23", goals: 1 },
+            { name: "Sahob", team: "2001", goals: 1 }
+        ];
 
         const matchesData = [
             {
@@ -832,6 +988,12 @@
             });
             document.getElementById(`section-${tab}`).classList.remove('hidden');
             document.getElementById(`tab-${tab}`).classList.add('active');
+        }
+
+        function sortAllGroups() {
+            Object.keys(groupsData).forEach(grp => {
+                groupsData[grp].sort((a, b) => b.pts - a.pts || b.diff - a.diff);
+            });
         }
 
         function renderGroup(grp) {
@@ -931,17 +1093,25 @@
             `).join('');
         }
 
-        // data.json dan real vaqtda o'qib olish va saralash
-        fetch('data.json?v=' + Date.now())
-            .then(res => res.json())
-            .then(data => {
-                groupsData = data.groups || {};
-                scorersData = data.scorers || [];
+        // 1. Zudlik bilan ichki ma'lumotlar bilan ekranga chiqarish:
+        sortAllGroups();
+        renderGroup('A');
+        renderScorers();
+        renderMatches();
 
-                // Ochkolar va to'plar nisbati bo'yicha saralash
-                Object.keys(groupsData).forEach(grp => {
-                    groupsData[grp].sort((a, b) => b.pts - a.pts || b.diff - a.diff);
-                });
+        // 2. data.json bo'lsa, ma'lumotlarni yangilab olish:
+        fetch('data.json?v=' + Date.now())
+            .then(res => {
+                if (!res.ok) throw new Error("Fayl topilmadi");
+                return res.json();
+            })
+            .then(data => {
+                if (data.groups) groupsData = data.groups;
+                if (data.scorers && data.scorers.length > 0) scorersData = data.scorers;
+
+                sortAllGroups();
+                renderGroup('A');
+                renderScorers();
 
                 if (data.mvp) {
                     const descEl = document.querySelector('.mvp-desc');
@@ -954,13 +1124,9 @@
                     if (teamEl && data.mvp.team) teamEl.textContent = `⚽ ${data.mvp.team}`;
                     if (imgEl && data.mvp.image) imgEl.src = `${data.mvp.image}?v=` + Date.now();
                 }
-
-                renderGroup('A');
-                renderScorers();
-                renderMatches();
             })
             .catch(err => {
-                console.error("data.json yuklanmadi:", err);
+                console.log("data.json o'qilmadi, ichki zaxira ma'lumotlari ishlatilmoqda.");
             });
     </script>
 </body>
