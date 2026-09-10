@@ -12,7 +12,7 @@ MINI_APP_URL = "https://javokhir7.github.io/football_bot/?v=4"
 ADMIN_ID = 314323733
 
 # GitHub API sozlamalari
-GITHUB_TOKEN = "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"
+GITHUB_TOKEN = "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"
 REPO_OWNER = "Javokhir7"
 REPO_NAME = "football_bot"
 FILE_PATH = "data.json"
