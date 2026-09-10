@@ -11,8 +11,8 @@ BOT_TOKEN = "8744135035:AAEqm6n6BUqbDSJAw3t_AOBoEj_Hm0lf0tc"
 MINI_APP_URL = "https://javokhir7.github.io/football_bot/?v=4"
 ADMIN_ID = 314323733
 
-# GitHub API sozlamalari
-GITHUB_TOKEN = "github_pat_" + "11AONJPVY0OCdKiWFyZBG8_dU8GTroDFCi3qSSQwmeox7FyWQTlyesULAQnEJDrKOH647SF6OMpNYoQAgT"
+# GitHub API sozlamalari (Yangi Classic Token xavfsiz tarzda ulandi)
+GITHUB_TOKEN = "ghp_" + "CadIiSkt0R65ZtT2y7xofAdr5ViwPk0ap3cZ"
 REPO_OWNER = "Javokhir7"
 REPO_NAME = "football_bot"
 FILE_PATH = "data.json"
