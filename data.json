@@ -7,318 +7,207 @@
   },
   "groups": {
     "A": [
-      {
-        "name": "Mahalla",
-        "p": 5,
-        "diff": 15,
-        "pts": 12
-      },
-      {
-        "name": "2006",
-        "p": 5,
-        "diff": 6,
-        "pts": 12
-      },
-      {
-        "name": "2009",
-        "p": 6,
-        "diff": -9,
-        "pts": 9
-      },
-      {
-        "name": "1993",
-        "p": 4,
-        "diff": 10,
-        "pts": 7
-      },
-      {
-        "name": "2003",
-        "p": 4,
-        "diff": 4,
-        "pts": 6
-      },
-      {
-        "name": "2004",
-        "p": 6,
-        "diff": -12,
-        "pts": 5
-      },
-      {
-        "name": "2009-23",
-        "p": 6,
-        "diff": -14,
-        "pts": 1
-      }
+      { "name": "Mahalla", "p": 5, "diff": 15, "pts": 12 },
+      { "name": "2006", "p": 5, "diff": 6, "pts": 12 },
+      { "name": "2009", "p": 6, "diff": -9, "pts": 9 },
+      { "name": "1993", "p": 4, "diff": 10, "pts": 7 },
+      { "name": "2003", "p": 4, "diff": 4, "pts": 6 },
+      { "name": "2004", "p": 6, "diff": -12, "pts": 5 },
+      { "name": "2009-23", "p": 6, "diff": -14, "pts": 1 }
     ],
     "B": [
-      {
-        "name": "1996-23",
-        "p": 5,
-        "diff": 5,
-        "pts": 10
-      },
-      {
-        "name": "1986",
-        "p": 5,
-        "diff": 3,
-        "pts": 9
-      },
-      {
-        "name": "2002-23",
-        "p": 5,
-        "diff": 3,
-        "pts": 7
-      },
-      {
-        "name": "2005",
-        "p": 5,
-        "diff": -15,
-        "pts": 6
-      },
-      {
-        "name": "1991-23",
-        "p": 4,
-        "diff": 0,
-        "pts": 5
-      },
-      {
-        "name": "2003-12",
-        "p": 4,
-        "diff": 5,
-        "pts": 4
-      },
-      {
-        "name": "2002",
-        "p": 4,
-        "diff": -1,
-        "pts": 4
-      }
+      { "name": "1996-23", "p": 5, "diff": 5, "pts": 10 },
+      { "name": "1986", "p": 5, "diff": 3, "pts": 9 },
+      { "name": "2002-23", "p": 5, "diff": 3, "pts": 7 },
+      { "name": "2005", "p": 5, "diff": -15, "pts": 6 },
+      { "name": "1991-23", "p": 4, "diff": 0, "pts": 5 },
+      { "name": "2003-12", "p": 4, "diff": 5, "pts": 4 },
+      { "name": "2002", "p": 4, "diff": -1, "pts": 4 }
     ],
     "C": [
-      {
-        "name": "1988",
-        "p": 5,
-        "diff": 10,
-        "pts": 10
-      },
-      {
-        "name": "2001",
-        "p": 4,
-        "diff": 6,
-        "pts": 10
-      },
-      {
-        "name": "1991",
-        "p": 4,
-        "diff": 11,
-        "pts": 9
-      },
-      {
-        "name": "1998-v",
-        "p": 5,
-        "diff": 7,
-        "pts": 9
-      },
-      {
-        "name": "1992-23",
-        "p": 5,
-        "diff": -4,
-        "pts": 7
-      },
-      {
-        "name": "2000",
-        "p": 4,
-        "diff": -14,
-        "pts": 1
-      },
-      {
-        "name": "2008-23",
-        "p": 5,
-        "diff": -16,
-        "pts": 0
-      }
+      { "name": "1988", "p": 5, "diff": 10, "pts": 10 },
+      { "name": "2001", "p": 4, "diff": 6, "pts": 10 },
+      { "name": "1991", "p": 4, "diff": 11, "pts": 9 },
+      { "name": "1998-v", "p": 5, "diff": 7, "pts": 9 },
+      { "name": "1992-23", "p": 5, "diff": -4, "pts": 7 },
+      { "name": "2000", "p": 4, "diff": -14, "pts": 1 },
+      { "name": "2008-23", "p": 5, "diff": -16, "pts": 0 }
     ],
     "D": [
-      {
-        "name": "1997",
-        "p": 4,
-        "diff": 22,
-        "pts": 12
-      },
-      {
-        "name": "1994",
-        "p": 5,
-        "diff": 11,
-        "pts": 10
-      },
-      {
-        "name": "1998",
-        "p": 5,
-        "diff": 7,
-        "pts": 10
-      },
-      {
-        "name": "1995",
-        "p": 5,
-        "diff": 10,
-        "pts": 7
-      },
-      {
-        "name": "2007",
-        "p": 4,
-        "diff": -7,
-        "pts": 4
-      },
-      {
-        "name": "Obod-98",
-        "p": 4,
-        "diff": -10,
-        "pts": 3
-      },
-      {
-        "name": "1996",
-        "p": 5,
-        "diff": -33,
-        "pts": 0
-      }
+      { "name": "1997", "p": 4, "diff": 22, "pts": 12 },
+      { "name": "1994", "p": 5, "diff": 11, "pts": 10 },
+      { "name": "1998", "p": 5, "diff": 7, "pts": 10 },
+      { "name": "1995", "p": 5, "diff": 10, "pts": 7 },
+      { "name": "2007", "p": 4, "diff": -7, "pts": 4 },
+      { "name": "Obod-98", "p": 4, "diff": -10, "pts": 3 },
+      { "name": "1996", "p": 5, "diff": -33, "pts": 0 }
     ]
   },
   "scorers": [
-    {
-      "name": "Jahongir",
-      "team": "1997",
-      "goals": 17
-    },
-    {
-      "name": "Botir",
-      "team": "2003",
-      "goals": 17
-    },
-    {
-      "name": "Sardor",
-      "team": "2001",
-      "goals": 15
-    },
-    {
-      "name": "Islom",
-      "team": "1993",
-      "goals": 13
-    },
-    {
-      "name": "Botir",
-      "team": "1998-v",
-      "goals": 12
-    },
-    {
-      "name": "Xolyor",
-      "team": "2002-23",
-      "goals": 12
-    },
-    {
-      "name": "Abdulaziz",
-      "team": "2007",
-      "goals": 11
-    },
-    {
-      "name": "Farrux",
-      "team": "2002-23",
-      "goals": 10
-    },
-    {
-      "name": "Lochin",
-      "team": "1998",
-      "goals": 9
-    },
-    {
-      "name": "Adham",
-      "team": "1994",
-      "goals": 9
-    },
-    {
-      "name": "Ravshan",
-      "team": "2005",
-      "goals": 8
-    }
+    { "name": "Jahongir", "team": "1997", "goals": 17 },
+    { "name": "Botir", "team": "2003", "goals": 17 },
+    { "name": "Sardor", "team": "2001", "goals": 15 },
+    { "name": "Islom", "team": "1993", "goals": 13 },
+    { "name": "Botir", "team": "1998-v", "goals": 12 },
+    { "name": "Xolyor", "team": "2002-23", "goals": 12 },
+    { "name": "Abdulaziz", "team": "2007", "goals": 11 },
+    { "name": "Farrux", "team": "2002-23", "goals": 10 },
+    { "name": "Lochin", "team": "1998", "goals": 9 },
+    { "name": "Adham", "team": "1994", "goals": 9 },
+    { "name": "Ravshan", "team": "2005", "goals": 8 },
+    { "name": "Ulugʻbek", "team": "2003-12", "goals": 8 },
+    { "name": "Behruz", "team": "2009", "goals": 8 },
+    { "name": "Maruf", "team": "Mahalla", "goals": 7 },
+    { "name": "Ibrohim", "team": "2009-23", "goals": 7 },
+    { "name": "Sardor", "team": "1988", "goals": 7 },
+    { "name": "Sherzod", "team": "1998", "goals": 7 },
+    { "name": "Karimjon", "team": "2004", "goals": 7 },
+    { "name": "Otabek", "team": "1994", "goals": 6 },
+    { "name": "Jahongir", "team": "2003-12", "goals": 6 },
+    { "name": "Ahmadjon", "team": "1996-23", "goals": 6 },
+    { "name": "Gʻulom", "team": "Mahalla", "goals": 6 },
+    { "name": "Sherzod", "team": "1991-23", "goals": 6 },
+    { "name": "Diyor", "team": "1991-23", "goals": 6 },
+    { "name": "Muhammadamen", "team": "2000", "goals": 6 },
+    { "name": "Nodir", "team": "1996", "goals": 6 },
+    { "name": "Begzod", "team": "1993", "goals": 5 },
+    { "name": "Begzod", "team": "1996-23", "goals": 5 },
+    { "name": "Otabek", "team": "2006", "goals": 5 },
+    { "name": "Javohir", "team": "2008-23", "goals": 5 },
+    { "name": "Javohir", "team": "2009-23", "goals": 5 },
+    { "name": "Ilhom", "team": "1991", "goals": 5 },
+    { "name": "Muhammad", "team": "1994", "goals": 5 },
+    { "name": "Sardor", "team": "Obod -1998", "goals": 5 },
+    { "name": "Jasur", "team": "Obod -1998", "goals": 5 },
+    { "name": "Ixtiyor", "team": "2003", "goals": 5 },
+    { "name": "Shuxrat", "team": "Mahalla", "goals": 4 },
+    { "name": "Ismoil", "team": "Mahalla", "goals": 4 },
+    { "name": "Farrux", "team": "2002", "goals": 4 },
+    { "name": "Tohir", "team": "1998-v", "goals": 4 },
+    { "name": "Shaxboz", "team": "1998-v", "goals": 4 },
+    { "name": "Azim", "team": "1998-v", "goals": 4 },
+    { "name": "Jahon", "team": "1988", "goals": 4 },
+    { "name": "Shuxrat", "team": "1988", "goals": 4 },
+    { "name": "Asadbek", "team": "2004", "goals": 4 },
+    { "name": "Elyor", "team": "1986", "goals": 4 },
+    { "name": "Oybek", "team": "1986", "goals": 4 },
+    { "name": "Begali", "team": "2007", "goals": 4 },
+    { "name": "Sarvar", "team": "1991", "goals": 4 },
+    { "name": "Javohir", "team": "1994", "goals": 4 },
+    { "name": "Adham", "team": "1992-23", "goals": 4 },
+    { "name": "Rustam", "team": "Obod -1998", "goals": 4 },
+    { "name": "Muhammad", "team": "2004", "goals": 4 },
+    { "name": "Kamol", "team": "2004", "goals": 4 },
+    { "name": "Bekki", "team": "1996-23", "goals": 4 },
+    { "name": "Yorqin", "team": "2003-12", "goals": 4 },
+    { "name": "Siroj", "team": "Obod -1998", "goals": 4 },
+    { "name": "Javohir", "team": "2002-23", "goals": 3 },
+    { "name": "Xurshid", "team": "2002-23", "goals": 3 },
+    { "name": "Sardor", "team": "1997", "goals": 3 },
+    { "name": "Javohir", "team": "1997", "goals": 3 },
+    { "name": "Zahiriddin", "team": "1998", "goals": 3 },
+    { "name": "Diyor", "team": "1993", "goals": 3 },
+    { "name": "Isroil", "team": "2005", "goals": 3 },
+    { "name": "Ruslan", "team": "2006", "goals": 3 },
+    { "name": "Sobit", "team": "1988", "goals": 3 },
+    { "name": "Uchqun", "team": "1994", "goals": 3 },
+    { "name": "Gʻolib", "team": "1996", "goals": 3 },
+    { "name": "Oʻtkir", "team": "1998", "goals": 3 },
+    { "name": "Jalol", "team": "2002", "goals": 3 },
+    { "name": "Sunnat", "team": "Mahalla", "goals": 2 },
+    { "name": "Anvar", "team": "2000", "goals": 2 },
+    { "name": "Sohib", "team": "2000", "goals": 2 },
+    { "name": "Sindor", "team": "2000", "goals": 2 },
+    { "name": "Mansur", "team": "2000", "goals": 2 },
+    { "name": "Ixtiyor", "team": "1992-23", "goals": 2 },
+    { "name": "Sahob", "team": "1992-23", "goals": 2 },
+    { "name": "Azamat", "team": "1992-23", "goals": 2 },
+    { "name": "Rahimjon", "team": "2003-12", "goals": 2 },
+    { "name": "Javlon", "team": "2003-12", "goals": 2 },
+    { "name": "Ismoil", "team": "2008-23", "goals": 2 },
+    { "name": "Jamshid", "team": "2008-23", "goals": 2 },
+    { "name": "Diyor", "team": "1997", "goals": 2 },
+    { "name": "Sanjar", "team": "1997", "goals": 2 },
+    { "name": "Doniyor", "team": "1998 Obod", "goals": 2 },
+    { "name": "Furqat", "team": "1998 Obod", "goals": 2 },
+    { "name": "Bunyod", "team": "2009-23", "goals": 2 },
+    { "name": "Shahzod", "team": "1993", "goals": 2 },
+    { "name": "Ozod", "team": "2006", "goals": 2 },
+    { "name": "Bahodir", "team": "2006", "goals": 2 },
+    { "name": "Norchi", "team": "1986", "goals": 2 },
+    { "name": "Muhammadali", "team": "1991-23", "goals": 2 },
+    { "name": "Oxun", "team": "1991-23", "goals": 2 },
+    { "name": "Asilbek", "team": "1994", "goals": 2 },
+    { "name": "Sanjar", "team": "1994", "goals": 2 },
+    { "name": "Sharof", "team": "1994", "goals": 2 },
+    { "name": "Yorqin", "team": "1994", "goals": 2 },
+    { "name": "Azamat", "team": "1995", "goals": 2 },
+    { "name": "Doston", "team": "1995", "goals": 2 },
+    { "name": "Asil", "team": "1995", "goals": 2 },
+    { "name": "Sardor", "team": "2003", "goals": 2 },
+    { "name": "Jahongir", "team": "2001", "goals": 2 },
+    { "name": "Suvanqul", "team": "Mahalla", "goals": 1 },
+    { "name": "Shavkat", "team": "Mahalla", "goals": 1 },
+    { "name": "Otabek", "team": "1998-v", "goals": 1 },
+    { "name": "Nemat", "team": "1988", "goals": 1 },
+    { "name": "Maruf", "team": "1988", "goals": 1 },
+    { "name": "Yunus", "team": "2002", "goals": 1 },
+    { "name": "Xamid", "team": "2002", "goals": 1 },
+    { "name": "Jasur", "team": "2002", "goals": 1 },
+    { "name": "Gʻayrat", "team": "2002", "goals": 1 },
+    { "name": "Suxrob", "team": "2002", "goals": 1 },
+    { "name": "Muhammad", "team": "2002-23", "goals": 1 },
+    { "name": "Aziz", "team": "2008-23", "goals": 1 },
+    { "name": "Azamat", "team": "2008-23", "goals": 1 },
+    { "name": "Sobir", "team": "2008-23", "goals": 1 },
+    { "name": "Jamshid", "team": "2009", "goals": 1 },
+    { "name": "Islom", "team": "2009", "goals": 1 },
+    { "name": "Sardor", "team": "2009", "goals": 1 },
+    { "name": "Abbos", "team": "1997", "goals": 1 },
+    { "name": "Sahob", "team": "1997", "goals": 1 },
+    { "name": "Nodir", "team": "1998 Obod", "goals": 1 },
+    { "name": "Behruz", "team": "2009-23", "goals": 1 },
+    { "name": "Asil", "team": "2009-23", "goals": 1 },
+    { "name": "Ozod", "team": "2009-23", "goals": 1 },
+    { "name": "Ulugʻbek", "team": "1993", "goals": 1 },
+    { "name": "Shoxjaxon", "team": "2005", "goals": 1 },
+    { "name": "Fazliddin", "team": "2005", "goals": 1 },
+    { "name": "Laziz", "team": "1986", "goals": 1 },
+    { "name": "Sobir", "team": "1986", "goals": 1 },
+    { "name": "Husan", "team": "1986", "goals": 1 },
+    { "name": "Akmal", "team": "1991-23", "goals": 1 },
+    { "name": "Oybek", "team": "1996-23", "goals": 1 },
+    { "name": "Iskandar", "team": "2007", "goals": 1 },
+    { "name": "Islom", "team": "2007", "goals": 1 },
+    { "name": "Izzat", "team": "1991", "goals": 1 },
+    { "name": "Muhammad", "team": "1991", "goals": 1 },
+    { "name": "Maftun", "team": "1991", "goals": 1 },
+    { "name": "Ozod", "team": "2004", "goals": 1 },
+    { "name": "Bunyod", "team": "1992-23", "goals": 1 },
+    { "name": "Sahob", "team": "2001", "goals": 1 }
   ],
   "matches": [
     {
       "date": "9-Sentyabr (Chorshanba)",
       "list": [
-        {
-          "t1": "1986",
-          "t2": "2005",
-          "time": "6 - 1"
-        },
-        {
-          "t1": "Mahalla",
-          "t2": "2004",
-          "time": "8 - 2"
-        },
-        {
-          "t1": "2006",
-          "t2": "2003",
-          "time": "19:50"
-        },
-        {
-          "t1": "2003-12",
-          "t2": "1991-23",
-          "time": "20:30"
-        },
-        {
-          "t1": "1991",
-          "t2": "1998-v",
-          "time": "5 - 6"
-        },
-        {
-          "t1": "2008-23",
-          "t2": "1992-23",
-          "time": "2 - 5"
-        },
-        {
-          "t1": "1995",
-          "t2": "1998",
-          "time": "3 - 7"
-        }
+        { "t1": "1986", "t2": "2005", "time": "6 - 1" },
+        { "t1": "Mahalla", "t2": "2004", "time": "8 - 2" },
+        { "t1": "2006", "t2": "2003", "time": "9 - 3" },
+        { "t1": "1991-23", "t2": "1996-23", "time": "2 - 2" },
+        { "t1": "1991", "t2": "1998-v", "time": "5 - 6" },
+        { "t1": "2008-23", "t2": "1992-23", "time": "2 - 5" },
+        { "t1": "1995", "t2": "1998", "time": "3 - 7" }
       ]
     },
     {
       "date": "11-Sentyabr (Juma)",
       "list": [
-        {
-          "t1": "1991",
-          "t2": "2001",
-          "time": "18:30"
-        },
-        {
-          "t1": "2000",
-          "t2": "2008-23",
-          "time": "19:10"
-        },
-        {
-          "t1": "1991-23",
-          "t2": "1996-23",
-          "time": "19:50"
-        },
-        {
-          "t1": "2005",
-          "t2": "2002",
-          "time": "20:30"
-        },
-        {
-          "t1": "Obod",
-          "t2": "2007",
-          "time": "21:10"
-        },
-        {
-          "t1": "1993",
-          "t2": "2003",
-          "time": "21:50"
-        },
-        {
-          "t1": "1997",
-          "t2": "2007",
-          "time": "22:30"
-        }
+        { "t1": "1991", "t2": "2001", "time": "18:30" },
+        { "t1": "2000", "t2": "2008-23", "time": "19:10" },
+        { "t1": "2005", "t2": "2002", "time": "20:30" },
+        { "t1": "Obod", "t2": "2007", "time": "21:10" },
+        { "t1": "1993", "t2": "2003", "time": "21:50" },
+        { "t1": "1997", "t2": "2007", "time": "22:30" }
       ]
     }
   ]
