@@ -25,7 +25,7 @@ dp = Dispatcher()
 # --- GITHUB API BILAN ISHLASH FUNKSIYALARI ---
 
 async def get_github_data():
-    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{FILE_PATH}"
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{FILE_PATH}?ref=main"
     headers = {
         "Authorization": f"Bearer {GITHUB_TOKEN}",
         "Accept": "application/vnd.github+json",
@@ -54,7 +54,8 @@ async def update_github_data(new_data, sha, commit_msg):
     payload = {
         "message": commit_msg,
         "content": encoded_content,
-        "sha": sha
+        "sha": sha,
+        "branch": "main"
     }
     async with aiohttp.ClientSession() as session:
         async with session.put(url, headers=headers, json=payload) as resp:
