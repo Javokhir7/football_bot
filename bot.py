@@ -8,10 +8,10 @@ from aiogram.enums import ChatType
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
 BOT_TOKEN = "8744135035:AAEqm6n6BUqbDSJAw3t_AOBoEj_Hm0lf0tc"
-MINI_APP_URL = "https://javokhir7.github.io/football_bot/?v=4"
+MINI_APP_URL = "https://javokhir7.github.io/football_bot/?v=6"
 ADMIN_ID = 314323733
 
-# GitHub API sozlamalari (Classic Token)
+# GitHub API sozlamalari
 GITHUB_TOKEN = "ghp_" + "CadIiSkt0R65ZtT2y7xofAdr5ViwPk0ap3cZ"
 REPO_OWNER = "Javokhir7"
 REPO_NAME = "football_bot"
@@ -25,27 +25,23 @@ dp = Dispatcher()
 # --- GITHUB BILAN ISHLASH FUNKSIYALARI ---
 
 async def get_github_data():
-    raw_url = f"https://raw.githubusercontent.com/{REPO_OWNER}/{REPO_NAME}/main/{FILE_PATH}"
     api_url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{FILE_PATH}?ref=main"
     headers = {
         "Authorization": f"token {GITHUB_TOKEN}",
         "Accept": "application/vnd.github.v3+json",
-        "User-Agent": "RavalliqBot"
+        "User-Agent": "RavalliqBot",
+        "Cache-Control": "no-cache"
     }
 
     async with aiohttp.ClientSession() as session:
-        async with session.get(raw_url) as raw_resp:
-            if raw_resp.status != 200:
-                return None, None, f"Raw o'qishda xatolik: Status {raw_resp.status}"
-            data = await raw_resp.json(content_type=None)
-
-        async with session.get(api_url, headers=headers) as api_resp:
-            if api_resp.status == 200:
-                res_data = await api_resp.json()
-                return data, res_data["sha"], None
+        async with session.get(api_url, headers=headers) as resp:
+            if resp.status == 200:
+                res_data = await resp.json()
+                content = base64.b64decode(res_data["content"]).decode("utf-8")
+                return json.loads(content), res_data["sha"], None
             else:
-                err_text = await api_resp.text()
-                return None, None, f"SHA olishda xatolik: {api_resp.status} | {err_text[:100]}"
+                err_text = await resp.text()
+                return None, None, f"Status {resp.status}: {err_text[:120]}"
 
 async def update_github_data(new_data, sha, commit_msg):
     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{FILE_PATH}"
@@ -124,11 +120,12 @@ async def admin_help(message: types.Message):
         "⚙️ <b>Admin boshqaruv paneli</b>\n\n"
         "<b>1. O'yin natijasini kiritish:</b>\n"
         "<code>/match Jamoa1 Hisob1 - Hisob2 Jamoa2</code>\n"
-        "<i>Misol:</i> <code>/match Mahalla 2 - 1 2004</code>\n\n"
+        "<i>Misol:</i> <code>/match Mahalla 2 - 1 2004</code>\n"
+        "<i>(Turnir jadvali va taqvimdagi vaqt avtomatik hisobga almashadi)</i>\n\n"
         "<b>2. To'purarga gol qo'shish:</b>\n"
         "<code>/goal Ism Jamoa GollarSoni</code>\n"
         "<i>Misol:</i> <code>/goal Sardor 2001 2</code>\n\n"
-        "<b>3. Foydalanuvchilar:</b>\n"
+        "<b>3. Foydalanuvchilar soni:</b>\n"
         "<code>/users</code>"
     )
     await message.answer(text, parse_mode="HTML")
@@ -159,6 +156,7 @@ async def add_match_result(message: types.Message):
         await wait_msg.edit_text(f"❌ Xatolik: data.json fayli yuklanmadi.{error_info}", parse_mode="HTML")
         return
 
+    # 1. Turnir jadvalini yangilash
     t1_found, t2_found = False, False
     diff_t1 = score1 - score2
     diff_t2 = score2 - score1
@@ -168,12 +166,12 @@ async def add_match_result(message: types.Message):
 
     for grp in data["groups"]:
         for team in data["groups"][grp]:
-            if team["name"].lower() == team1.lower():
+            if team["name"].strip().lower() == team1.strip().lower():
                 team["p"] += 1
                 team["diff"] += diff_t1
                 team["pts"] += pts_t1
                 t1_found = True
-            elif team["name"].lower() == team2.lower():
+            elif team["name"].strip().lower() == team2.strip().lower():
                 team["p"] += 1
                 team["diff"] += diff_t2
                 team["pts"] += pts_t2
@@ -183,14 +181,33 @@ async def add_match_result(message: types.Message):
         await wait_msg.edit_text(f"⚠️ Jamoalar jadvaldan topilmadi!\nTopildi: {team1} ({t1_found}), {team2} ({t2_found})")
         return
 
-    commit_msg = f"Result: {team1} {score1}-{score2} {team2}"
+    # 2. O'yinlar taqvimini (matches) yangilash
+    schedule_updated = False
+    if "matches" in data:
+        for day in data["matches"]:
+            for m in day.get("list", []):
+                cond1 = (m["t1"].strip().lower() == team1.strip().lower() and m["t2"].strip().lower() == team2.strip().lower())
+                cond2 = (m["t1"].strip().lower() == team2.strip().lower() and m["t2"].strip().lower() == team1.strip().lower())
+                if cond1:
+                    m["time"] = f"{score1} - {score2}"
+                    schedule_updated = True
+                    break
+                elif cond2:
+                    m["time"] = f"{score2} - {score1}"
+                    schedule_updated = True
+                    break
+            if schedule_updated:
+                break
+
+    commit_msg = f"Match: {team1} {score1}-{score2} {team2}"
     success = await update_github_data(data, sha, commit_msg)
 
     if success:
+        note = " (taqvimdagi o'yin vaqti ham yangilandi)" if schedule_updated else ""
         await wait_msg.edit_text(
             f"✅ <b>Natija muvaffaqiyatli saqlandi!</b>\n\n"
             f"⚽ {team1} {score1} - {score2} {team2}\n"
-            f"Jadval va ochkolar avtomatik yangilandi.",
+            f"Turnir jadvali va ochkolar avtomatik yangilandi{note}.",
             parse_mode="HTML"
         )
     else:
@@ -223,7 +240,7 @@ async def add_goal(message: types.Message):
 
     found = False
     for s in data["scorers"]:
-        if s["name"].lower() == p_name.lower() and s["team"].lower() == p_team.lower():
+        if s["name"].strip().lower() == p_name.strip().lower() and s["team"].strip().lower() == p_team.strip().lower():
             s["goals"] += goals
             found = True
             break
