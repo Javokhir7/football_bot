@@ -11,7 +11,7 @@ BOT_TOKEN = "8744135035:AAEqm6n6BUqbDSJAw3t_AOBoEj_Hm0lf0tc"
 MINI_APP_URL = "https://javokhir7.github.io/football_bot/?v=4"
 ADMIN_ID = 314323733
 
-# GitHub API sozlamalari (Yangi Classic Token xavfsiz tarzda ulandi)
+# GitHub API sozlamalari (Classic Token)
 GITHUB_TOKEN = "ghp_" + "CadIiSkt0R65ZtT2y7xofAdr5ViwPk0ap3cZ"
 REPO_OWNER = "Javokhir7"
 REPO_NAME = "football_bot"
@@ -22,31 +22,37 @@ active_users = {}
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
-# --- GITHUB API BILAN ISHLASH FUNKSIYALARI ---
+# --- GITHUB BILAN ISHLASH FUNKSIYALARI ---
 
 async def get_github_data():
-    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{FILE_PATH}?ref=main"
+    raw_url = f"https://raw.githubusercontent.com/{REPO_OWNER}/{REPO_NAME}/main/{FILE_PATH}"
+    api_url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{FILE_PATH}?ref=main"
     headers = {
-        "Authorization": f"Bearer {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github+json",
-        "User-Agent": "TelegramBot"
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "RavalliqBot"
     }
+
     async with aiohttp.ClientSession() as session:
-        async with session.get(url, headers=headers) as resp:
-            if resp.status == 200:
-                res_data = await resp.json()
-                content = base64.b64decode(res_data["content"]).decode("utf-8")
-                return json.loads(content), res_data["sha"], None
+        async with session.get(raw_url) as raw_resp:
+            if raw_resp.status != 200:
+                return None, None, f"Raw o'qishda xatolik: Status {raw_resp.status}"
+            data = await raw_resp.json(content_type=None)
+
+        async with session.get(api_url, headers=headers) as api_resp:
+            if api_resp.status == 200:
+                res_data = await api_resp.json()
+                return data, res_data["sha"], None
             else:
-                err_text = await resp.text()
-                return None, None, f"Status: {resp.status} | {err_text[:120]}"
+                err_text = await api_resp.text()
+                return None, None, f"SHA olishda xatolik: {api_resp.status} | {err_text[:100]}"
 
 async def update_github_data(new_data, sha, commit_msg):
     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{FILE_PATH}"
     headers = {
-        "Authorization": f"Bearer {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github+json",
-        "User-Agent": "TelegramBot"
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "RavalliqBot"
     }
     content_str = json.dumps(new_data, ensure_ascii=False, indent=2)
     encoded_content = base64.b64encode(content_str.encode("utf-8")).decode("utf-8")
@@ -110,7 +116,6 @@ async def private_start(message: types.Message):
     )
     await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
 
-# Admin boshqaruv yordamchisi
 @dp.message(Command("admin"), F.chat.type == ChatType.PRIVATE)
 async def admin_help(message: types.Message):
     if message.from_user.id != ADMIN_ID:
@@ -128,13 +133,11 @@ async def admin_help(message: types.Message):
     )
     await message.answer(text, parse_mode="HTML")
 
-# O'yin natijasini kiritish komandasi
 @dp.message(Command("match"), F.chat.type == ChatType.PRIVATE)
 async def add_match_result(message: types.Message):
     if message.from_user.id != ADMIN_ID:
         return
 
-    # Kutilayotgan format: /match Mahalla 2 - 1 2004
     parts = message.text.replace("/match", "").strip().split()
     if len(parts) < 5 or parts[2] != "-":
         await message.answer("⚠️ Noto'g'ri format!\nMisol: <code>/match Mahalla 2 - 1 2004</code>", parse_mode="HTML")
@@ -156,7 +159,6 @@ async def add_match_result(message: types.Message):
         await wait_msg.edit_text(f"❌ Xatolik: data.json fayli yuklanmadi.{error_info}", parse_mode="HTML")
         return
 
-    # Jamoalarni topish va hisoblash
     t1_found, t2_found = False, False
     diff_t1 = score1 - score2
     diff_t2 = score2 - score1
@@ -194,13 +196,11 @@ async def add_match_result(message: types.Message):
     else:
         await wait_msg.edit_text("❌ GitHub'ga saqlashda xatolik yuz berdi.")
 
-# To'purarga gol qo'shish komandasi
 @dp.message(Command("goal"), F.chat.type == ChatType.PRIVATE)
 async def add_goal(message: types.Message):
     if message.from_user.id != ADMIN_ID:
         return
 
-    # Kutilayotgan format: /goal Sardor 2001 2
     parts = message.text.replace("/goal", "").strip().split()
     if len(parts) < 3:
         await message.answer("⚠️ Noto'g'ri format!\nMisol: <code>/goal Sardor 2001 2</code>", parse_mode="HTML")
