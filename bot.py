@@ -443,6 +443,8 @@ async def list_users(message: types.Message):
 
 async def main():
     await set_bot_commands(bot)
+    # Webhookni o'chirib tashlaymiz, shunda Polling xatosiz ishlaydi
+    await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
