@@ -15,7 +15,7 @@ from aiogram.types import (
     BotCommandScopeChat
 )
 
-BOT_TOKEN = "8744135035:AAEqm6n6BUqbDSJAw3t_AOBoEj_Hm0lf0tc"
+BOT_TOKEN = "8744135035:AAFweQaZXdZBl3ptu5-bsKEYZSCuIZeBMPc"
 BASE_APP_URL = "https://javokhir7.github.io/football_bot/"
 
 # Ikkala admin ID raqamlari
