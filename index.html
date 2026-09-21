@@ -207,11 +207,6 @@
             border: 1px solid rgba(239, 68, 68, 0.35);
         }
 
-        .arrow-icon {
-            font-size: 9px;
-            line-height: 1;
-        }
-
         .col-team {
             text-align: left;
             font-weight: 700;
@@ -225,6 +220,122 @@
             font-size: 13px;
         }
 
+        /* --- PLAY-OFF QISMI CSS (MUSTAHKAM VARIANT) --- */
+        .bracket-scroll {
+            overflow-x: auto;
+            padding: 10px 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .bracket-container {
+            display: flex;
+            gap: 16px;
+            min-width: 820px;
+            padding-bottom: 20px;
+        }
+
+        .bracket-col {
+            display: flex;
+            flex-direction: column;
+            width: 145px;
+            flex-shrink: 0;
+        }
+
+        .bracket-col-header {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--ucl-cyan);
+            padding: 8px 0;
+            margin-bottom: 14px;
+            background: rgba(0, 242, 254, 0.08);
+            border-radius: 8px;
+            border: 1px solid var(--ucl-border);
+        }
+
+        .bracket-matches {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .b-match {
+            background: rgba(14, 25, 59, 0.95);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .b-slot {
+            padding: 8px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            min-height: 34px;
+            color: #fff;
+        }
+
+        .b-slot:last-child {
+            border-bottom: none;
+        }
+
+        .b-slot.loser {
+            text-decoration: line-through;
+            opacity: 0.4;
+            color: #ef4444 !important;
+        }
+
+        .b-slot b {
+            font-weight: 900;
+            color: var(--ucl-cyan);
+            font-size: 12px;
+            margin-left: 6px;
+        }
+
+        .pos-1 { color: var(--c-1st) !important; font-weight: 800; }
+        .pos-2 { color: var(--c-2nd) !important; font-weight: 800; }
+        .pos-3 { color: var(--c-3rd) !important; font-weight: 800; }
+        .pos-4 { color: var(--c-4th) !important; font-weight: 800; }
+
+        .bracket-divider {
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.25);
+            margin: 8px 0;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            padding: 8px;
+            margin-bottom: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .legend span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* --- QIDIRUV VA TO'PURARLAR --- */
         .search-box {
             position: relative;
             margin-bottom: 12px;
@@ -240,18 +351,6 @@
             font-size: 12px;
             font-weight: 600;
             outline: none;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-            transition: border-color 0.25s, box-shadow 0.25s;
-        }
-
-        .search-input:focus {
-            border-color: var(--ucl-cyan);
-            box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
-        }
-
-        .search-input::placeholder {
-            color: var(--text-muted);
-            font-size: 12px;
         }
 
         .search-icon {
@@ -272,10 +371,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .scorer-item:last-child {
-            border-bottom: none;
-        }
-
         .scorer-left {
             display: flex;
             align-items: center;
@@ -287,10 +382,6 @@
             font-weight: 800;
             width: 28px;
             color: var(--text-muted);
-        }
-
-        .rank-gold {
-            color: var(--ucl-cyan);
         }
 
         .scorer-name {
@@ -314,38 +405,23 @@
             border-radius: 8px;
         }
 
-        .empty-search {
-            text-align: center;
-            padding: 24px 12px;
-            color: var(--text-muted);
-            font-size: 12px;
-            font-weight: 600;
-        }
-
+        /* --- MVP --- */
         .mvp-card {
             background: linear-gradient(180deg, rgba(20, 35, 80, 0.85) 0%, rgba(8, 14, 38, 0.95) 100%);
             border: 1px solid rgba(255, 215, 0, 0.4);
             border-radius: 16px;
             padding: 20px 14px;
             text-align: center;
-            box-shadow: 0 12px 35px rgba(255, 215, 0, 0.15);
-            position: relative;
-            overflow: hidden;
         }
 
         .mvp-top-badge {
             display: inline-flex;
-            align-items: center;
-            gap: 6px;
             background: linear-gradient(135deg, #ffd700, #ff9900);
             color: #04091e;
             font-size: 11px;
             font-weight: 900;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
             padding: 5px 14px;
             border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
             margin-bottom: 12px;
         }
 
@@ -353,18 +429,15 @@
             font-size: 13px;
             font-weight: 700;
             color: #e2e8f0;
-            line-height: 1.5;
             margin-bottom: 16px;
         }
 
         .mvp-img-wrapper {
-            position: relative;
             display: inline-block;
             margin: 6px auto 14px;
             border-radius: 14px;
             padding: 4px;
             background: linear-gradient(135deg, #ffd700, #00f2fe);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
         }
 
         .mvp-img {
@@ -372,16 +445,12 @@
             max-width: 280px;
             display: block;
             border-radius: 10px;
-            object-fit: cover;
         }
 
         .mvp-name {
             font-size: 20px;
             font-weight: 900;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
             color: var(--gold);
-            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.4);
         }
 
         .mvp-team-sub {
@@ -391,6 +460,7 @@
             margin-top: 4px;
         }
 
+        /* --- O'YINLAR TAQVIMI --- */
         .date-title {
             font-size: 11px;
             font-weight: 800;
@@ -406,10 +476,6 @@
             justify-content: space-between;
             padding: 10px 14px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .match-row:last-child {
-            border-bottom: none;
         }
 
         .match-t {
@@ -440,131 +506,10 @@
             border-color: rgba(16, 185, 129, 0.5);
             color: #2ed573;
             font-weight: 900;
-            letter-spacing: 1px;
-        }
-
-        .bracket-scroll {
-            overflow-x: auto;
-            padding: 10px 4px;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .bracket-container {
-            display: flex;
-            gap: 16px;
-            min-width: 780px;
-            padding-bottom: 10px;
-        }
-
-        .bracket-col {
-            display: flex;
-            flex-direction: column;
-            width: 140px;
-            flex-shrink: 0;
-        }
-
-        .bracket-col-header {
-            text-align: center;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--ucl-cyan);
-            padding: 6px 0;
-            margin-bottom: 12px;
-            background: rgba(0, 242, 254, 0.08);
-            border-radius: 6px;
-            border: 1px solid var(--ucl-border);
-        }
-
-        .bracket-matches {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            height: 100%;
-            gap: 12px;
-        }
-
-        .b-match {
-            background: rgba(14, 25, 59, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-
-        .b-slot {
-            padding: 7px 10px;
-            font-size: 11px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            min-height: 32px;
-        }
-
-        .b-slot:last-child {
-            border-bottom: none;
-        }
-
-        .b-slot.empty {
-            color: #4a5d78;
-            font-style: italic;
-        }
-
-        .b-slot.loser {
-            text-decoration: line-through;
-            opacity: 0.45;
-            color: #ef4444 !important;
-        }
-
-        .b-slot b {
-            font-weight: 900;
-            color: var(--ucl-cyan);
-            font-size: 11px;
-            margin-left: 6px;
-        }
-
-        .pos-1 { color: var(--c-1st); }
-        .pos-2 { color: var(--c-2nd); }
-        .pos-3 { color: var(--c-3rd); }
-        .pos-4 { color: var(--c-4th); }
-
-        .bracket-divider {
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
-            margin: 6px 0;
-        }
-
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            padding: 8px;
-            margin-bottom: 10px;
-            font-size: 10px;
-            font-weight: 700;
-            background: rgba(0,0,0,0.25);
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.06);
-        }
-
-        .legend span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
         }
 
         .hidden {
-            display: none;
+            display: none !important;
         }
 
         .bottom-bar {
@@ -587,19 +532,11 @@
             background: linear-gradient(135deg, var(--ucl-blue), var(--ucl-cyan));
             color: #04091e;
             border: none;
-            outline: none;
             padding: 12px;
             border-radius: 10px;
             font-size: 13px;
             font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
     </style>
 </head>
@@ -619,7 +556,7 @@
         <button id="tab-matches" class="main-tab-btn" onclick="switchMainTab('matches')">O'yinlar</button>
     </div>
 
-    <!-- 1. Jadvallar bo'limi -->
+    <!-- 1. Jadval -->
     <div id="section-standings">
         <div class="groups-bar">
             <button id="btn-group-A" class="group-btn active" onclick="renderGroup('A')">Guruh A</button>
@@ -644,7 +581,7 @@
         </div>
     </div>
 
-    <!-- 2. Play-off bo'limi -->
+    <!-- 2. Play-off -->
     <div id="section-playoff" class="hidden">
         <div class="legend">
             <span><i class="dot" style="background: var(--c-1st);"></i> 1-o'rin</span>
@@ -675,11 +612,11 @@
                     <div class="bracket-matches" id="bracket-f"></div>
                 </div>
 
-                <div class="bracket-col" style="width: 120px;">
+                <div class="bracket-col" style="width: 130px;">
                     <div class="bracket-col-header" style="background: rgba(0, 242, 254, 0.2); border-color: var(--ucl-cyan);">Chempion</div>
                     <div class="bracket-matches" id="bracket-champ">
-                        <div class="b-match" style="border: 1px solid var(--ucl-cyan); text-align: center; background: rgba(0, 242, 254, 0.08);">
-                            <div class="b-slot empty" id="champ-slot" style="justify-content: center; color: var(--ucl-cyan); font-weight: 800; font-size: 13px;">
+                        <div class="b-match" style="margin-top: 155px; border: 1px solid var(--ucl-cyan); text-align: center; background: rgba(0, 242, 254, 0.08);">
+                            <div class="b-slot" id="champ-slot" style="justify-content: center; color: var(--ucl-cyan); font-weight: 800; font-size: 13px;">
                                 🏆 G'olib
                             </div>
                         </div>
@@ -689,16 +626,16 @@
         </div>
     </div>
 
-    <!-- 3. To'purarlar bo'limi -->
+    <!-- 3. To'purarlar -->
     <div id="section-scorers" class="hidden">
         <div class="search-box">
             <span class="search-icon">🔍</span>
-            <input type="text" id="scorer-search-input" class="search-input" placeholder="Ism yoki jamoani qidiring (masalan: Botir, 1994...)" oninput="filterScorers()">
+            <input type="text" id="scorer-search-input" class="search-input" placeholder="Ism yoki jamoani qidiring..." oninput="filterScorers()">
         </div>
         <div class="card" id="scorers-body"></div>
     </div>
 
-    <!-- 4. MVP bo'limi -->
+    <!-- 4. MVP -->
     <div id="section-mvp" class="hidden">
         <div class="mvp-card">
             <div class="mvp-top-badge">🏆 Turning eng yaxshisi</div>
@@ -707,50 +644,38 @@
                 <span style="color: var(--ucl-cyan);">1988 yillar jamoasi a'zosi</span>
             </p>
             <div class="mvp-img-wrapper">
-                <img src="mvp.jpg?v=3" alt="Soatov Sardor" class="mvp-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=800&auto=format&fit=crop';">
+                <img src="mvp.jpg" alt="MVP" class="mvp-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=800&auto=format&fit=crop';">
             </div>
             <div class="mvp-name">Soatov Sardor</div>
             <div class="mvp-team-sub">⚽ 1988 Jamoasi</div>
         </div>
     </div>
 
-    <!-- 5. O'yinlar taqvimi bo'limi -->
+    <!-- 5. O'yinlar -->
     <div id="section-matches" class="hidden">
         <div id="matches-body"></div>
     </div>
 
     <div class="bottom-bar">
-        <button class="launch-btn" onclick="shareOrOpenInGroup()">
-            <span>⚡ Guruhga ulashish / Ochish</span>
-        </button>
+        <button class="launch-btn" onclick="shareOrOpenInGroup()">⚡ Guruhga ulashish / Ochish</button>
     </div>
 
     <script>
         const tg = window.Telegram?.WebApp;
-        if (tg) {
-            tg.ready();
-            tg.expand();
-        }
+        if (tg) { tg.ready(); tg.expand(); }
 
         const BOT_USERNAME = "ravalliq_bot";
-
         function shareOrOpenInGroup() {
-            const shareUrl = `https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app&text=🏆 Ravalliq Chempionati turnir jadvali va o'yinlar taqvimi!`;
-            if (tg && tg.openTelegramLink) {
-                tg.openTelegramLink(shareUrl);
-            } else {
-                window.open(shareUrl, '_blank');
-            }
+            const shareUrl = `https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app&text=🏆 Ravalliq Chempionati turnir jadvali!`;
+            if (tg && tg.openTelegramLink) tg.openTelegramLink(shareUrl);
+            else window.open(shareUrl, '_blank');
         }
 
         let currentActiveGroup = 'A';
-        const cachedData = localStorage.getItem('ravalliq_cache');
-        let initialData = cachedData ? JSON.parse(cachedData) : null;
-
-        let groupsData = initialData?.groups || {};
-        let scorersData = initialData?.scorers || [];
-        let matchesData = initialData?.matches || [];
-        let playoffData = initialData?.playoff || null;
+        let groupsData = {};
+        let scorersData = [];
+        let matchesData = [];
+        let playoffData = null;
 
         function switchMainTab(tab) {
             ['standings', 'playoff', 'scorers', 'mvp', 'matches'].forEach(t => {
@@ -763,6 +688,11 @@
             const activeBtn = document.getElementById(`tab-${tab}`);
             if (activeEl) activeEl.classList.remove('hidden');
             if (activeBtn) activeBtn.classList.add('active');
+
+            // Play-off tabiga o'tganda qayta chizilishini kafolatlaymiz
+            if (tab === 'playoff' && playoffData) {
+                renderPlayoff(playoffData);
+            }
         }
 
         function sortAllGroups() {
@@ -793,9 +723,7 @@
                 return `
                 <tr>
                     <td class="col-pos">
-                        <span class="pos-badge ${badgeClass}">
-                            ${rank} <span class="arrow-icon">${arrowIcon}</span>
-                        </span>
+                        <span class="pos-badge ${badgeClass}">${rank} <span>${arrowIcon}</span></span>
                     </td>
                     <td class="col-team">${item.name}</td>
                     <td style="color: var(--text-muted);">${item.p}</td>
@@ -806,87 +734,14 @@
             }).join('');
         }
 
-        function renderScorers(items = null) {
-            const container = document.getElementById('scorers-body');
-            if (!container) return;
-            scorersData.sort((a, b) => b.goals - a.goals);
-            const rankedList = scorersData.map((s, idx) => ({ ...s, overallRank: idx + 1 }));
-            const listToRender = items !== null ? items : rankedList;
-
-            if (listToRender.length === 0) {
-                container.innerHTML = `<div class="empty-search">Hech qanday o'yinchi yoki jamoa topilmadi 😕</div>`;
-                return;
-            }
-
-            container.innerHTML = listToRender.map(s => {
-                const isTop3 = s.overallRank <= 3;
-                return `
-                <div class="scorer-item">
-                    <div class="scorer-left">
-                        <span class="scorer-rank ${isTop3 ? 'rank-gold' : ''}">${s.overallRank}.</span>
-                        <div>
-                            <div class="scorer-name">${s.name}</div>
-                            <div class="scorer-team">${s.team}</div>
-                        </div>
-                    </div>
-                    <div class="scorer-goals">${s.goals} ⚽</div>
-                </div>
-                `;
-            }).join('');
-        }
-
-        function filterScorers() {
-            const query = document.getElementById('scorer-search-input').value.toLowerCase().trim();
-            scorersData.sort((a, b) => b.goals - a.goals);
-            const rankedList = scorersData.map((s, idx) => ({ ...s, overallRank: idx + 1 }));
-
-            if (!query) {
-                renderScorers(rankedList);
-                return;
-            }
-
-            const filtered = rankedList.filter(s => 
-                s.name.toLowerCase().includes(query) || 
-                s.team.toLowerCase().includes(query)
-            );
-            renderScorers(filtered);
-        }
-
-        function renderMatches() {
-            const container = document.getElementById('matches-body');
-            if (!container) return;
-            container.innerHTML = matchesData.map(group => `
-                <div>
-                    <div class="date-title">📅 ${group.date}</div>
-                    <div class="card">
-                        ${group.list.map(m => {
-                            const isScore = m.time && m.time.includes('-');
-                            return `
-                            <div class="match-row">
-                                <span class="match-t">${m.t1}</span>
-                                <span class="match-time ${isScore ? 'is-score' : ''}">${m.time}</span>
-                                <span class="match-t right">${m.t2}</span>
-                            </div>
-                            `;
-                        }).join('')}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // --- PLAY-OFF RENDERING FUNKSIYASI ---
         function renderPlayoff(po) {
             if (!po) return;
 
             const r16Colors = [
-                ['pos-1', 'pos-4'],
-                ['pos-2', 'pos-3'],
-                ['pos-1', 'pos-4'],
-                ['pos-2', 'pos-3'],
-                ['pos-1', 'pos-4'],
-                ['pos-2', 'pos-3'],
-                ['pos-1', 'pos-4'],
-                ['pos-2', 'pos-3']
+                ['pos-1', 'pos-4'], ['pos-2', 'pos-3'],
+                ['pos-1', 'pos-4'], ['pos-2', 'pos-3'],
+                ['pos-1', 'pos-4'], ['pos-2', 'pos-3'],
+                ['pos-1', 'pos-4'], ['pos-2', 'pos-3']
             ];
 
             // 1/8 Final
@@ -902,10 +757,10 @@
                     html += `
                     <div class="b-match">
                         <div class="b-slot ${c1} ${t1Lost ? 'loser' : ''}">
-                            <span>${m.t1}</span><b>${m.s1 || ''}</b>
+                            <span>${m.t1 || '-'}</span><b>${m.s1 || ''}</b>
                         </div>
                         <div class="b-slot ${c2} ${t2Lost ? 'loser' : ''}">
-                            <span>${m.t2}</span><b>${m.s2 || ''}</b>
+                            <span>${m.t2 || '-'}</span><b>${m.s2 || ''}</b>
                         </div>
                     </div>`;
                     if (idx === 3) html += '<div class="bracket-divider"></div>';
@@ -921,11 +776,11 @@
                     const t1Lost = m.winner && m.winner !== m.t1;
                     const t2Lost = m.winner && m.winner !== m.t2;
                     html += `
-                    <div class="b-match">
-                        <div class="b-slot ${t1Lost ? 'loser' : ''}"><span>${m.t1}</span><b>${m.s1 || ''}</b></div>
-                        <div class="b-slot ${t2Lost ? 'loser' : ''}"><span>${m.t2}</span><b>${m.s2 || ''}</b></div>
+                    <div class="b-match" style="margin-top: ${idx % 2 === 0 ? '16px' : '38px'};">
+                        <div class="b-slot ${t1Lost ? 'loser' : ''}"><span>${m.t1 || '1/8 g\'olibi'}</span><b>${m.s1 || ''}</b></div>
+                        <div class="b-slot ${t2Lost ? 'loser' : ''}"><span>${m.t2 || '1/8 g\'olibi'}</span><b>${m.s2 || ''}</b></div>
                     </div>`;
-                    if (idx === 1) html += '<div class="bracket-divider"></div>';
+                    if (idx === 1) html += '<div class="bracket-divider" style="margin: 22px 0;"></div>';
                 });
                 qfEl.innerHTML = html;
             }
@@ -938,11 +793,10 @@
                     const t1Lost = m.winner && m.winner !== m.t1;
                     const t2Lost = m.winner && m.winner !== m.t2;
                     html += `
-                    <div class="b-match">
-                        <div class="b-slot ${t1Lost ? 'loser' : ''}"><span>${m.t1}</span><b>${m.s1 || ''}</b></div>
-                        <div class="b-slot ${t2Lost ? 'loser' : ''}"><span>${m.t2}</span><b>${m.s2 || ''}</b></div>
+                    <div class="b-match" style="margin-top: ${idx === 0 ? '58px' : '116px'};">
+                        <div class="b-slot ${t1Lost ? 'loser' : ''}"><span>${m.t1 || '1/4 g\'olibi'}</span><b>${m.s1 || ''}</b></div>
+                        <div class="b-slot ${t2Lost ? 'loser' : ''}"><span>${m.t2 || '1/4 g\'olibi'}</span><b>${m.s2 || ''}</b></div>
                     </div>`;
-                    if (idx === 0) html += '<div class="bracket-divider"></div>';
                 });
                 sfEl.innerHTML = html;
             }
@@ -954,9 +808,9 @@
                 const t1Lost = m.winner && m.winner !== m.t1;
                 const t2Lost = m.winner && m.winner !== m.t2;
                 fEl.innerHTML = `
-                <div class="b-match" style="border-color: var(--ucl-border);">
-                    <div class="b-slot ${t1Lost ? 'loser' : ''}" style="color: #fff;"><span>${m.t1}</span><b>${m.s1 || ''}</b></div>
-                    <div class="b-slot ${t2Lost ? 'loser' : ''}" style="color: #fff;"><span>${m.t2}</span><b>${m.s2 || ''}</b></div>
+                <div class="b-match" style="margin-top: 148px; border-color: var(--ucl-border);">
+                    <div class="b-slot ${t1Lost ? 'loser' : ''}"><span>${m.t1 || 'Finalchi 1'}</span><b>${m.s1 || ''}</b></div>
+                    <div class="b-slot ${t2Lost ? 'loser' : ''}"><span>${m.t2 || 'Finalchi 2'}</span><b>${m.s2 || ''}</b></div>
                 </div>`;
             }
 
@@ -967,6 +821,54 @@
             }
         }
 
+        function renderScorers(items = null) {
+            const container = document.getElementById('scorers-body');
+            if (!container) return;
+            scorersData.sort((a, b) => b.goals - a.goals);
+            const rankedList = scorersData.map((s, idx) => ({ ...s, overallRank: idx + 1 }));
+            const listToRender = items !== null ? items : rankedList;
+
+            container.innerHTML = listToRender.map(s => `
+                <div class="scorer-item">
+                    <div class="scorer-left">
+                        <span class="scorer-rank">${s.overallRank}.</span>
+                        <div>
+                            <div class="scorer-name">${s.name}</div>
+                            <div class="scorer-team">${s.team}</div>
+                        </div>
+                    </div>
+                    <div class="scorer-goals">${s.goals} ⚽</div>
+                </div>
+            `).join('');
+        }
+
+        function filterScorers() {
+            const query = document.getElementById('scorer-search-input').value.toLowerCase().trim();
+            scorersData.sort((a, b) => b.goals - a.goals);
+            const rankedList = scorersData.map((s, idx) => ({ ...s, overallRank: idx + 1 }));
+            if (!query) return renderScorers(rankedList);
+            renderScorers(rankedList.filter(s => s.name.toLowerCase().includes(query) || s.team.toLowerCase().includes(query)));
+        }
+
+        function renderMatches() {
+            const container = document.getElementById('matches-body');
+            if (!container) return;
+            container.innerHTML = matchesData.map(group => `
+                <div>
+                    <div class="date-title">📅 ${group.date}</div>
+                    <div class="card">
+                        ${group.list.map(m => `
+                            <div class="match-row">
+                                <span class="match-t">${m.t1}</span>
+                                <span class="match-time ${m.time.includes('-') ? 'is-score' : ''}">${m.time}</span>
+                                <span class="match-t right">${m.t2}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
         function updateAllUI() {
             sortAllGroups();
             renderGroup(currentActiveGroup);
@@ -975,31 +877,19 @@
             if (playoffData) renderPlayoff(playoffData);
         }
 
-        updateAllUI();
-
-        // Keshlanmaydigan Jonli GitHub API orqali tortish
+        // Jonli GitHub API ma'lumotlarini yuklash
         const API_URL = 'https://api.github.com/repos/Javokhir7/football_bot/contents/data.json?ref=main&t=' + Date.now();
 
         fetch(API_URL, {
             headers: { 'Accept': 'application/vnd.github.v3.raw' },
             cache: 'no-store'
         })
-        .then(res => {
-            if (!res.ok) throw new Error("Yuklab bo'lmadi: " + res.status);
-            return res.json();
-        })
+        .then(res => res.json())
         .then(data => {
             if (data.groups) groupsData = data.groups;
-            if (data.scorers && data.scorers.length > 0) scorersData = data.scorers;
-            if (data.matches && data.matches.length > 0) matchesData = data.matches;
+            if (data.scorers) scorersData = data.scorers;
+            if (data.matches) matchesData = data.matches;
             if (data.playoff) playoffData = data.playoff;
-
-            localStorage.setItem('ravalliq_cache', JSON.stringify({
-                groups: groupsData,
-                scorers: scorersData,
-                matches: matchesData,
-                playoff: playoffData
-            }));
 
             updateAllUI();
 
@@ -1015,9 +905,7 @@
                 if (imgEl && data.mvp.image) imgEl.src = `${data.mvp.image}?v=` + Date.now();
             }
         })
-        .catch(err => {
-            console.error("Jonli ma'lumot olishda xato:", err);
-        });
+        .catch(err => console.error("Xato:", err));
     </script>
 </body>
 </html>
