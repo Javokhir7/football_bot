@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
@@ -513,6 +513,19 @@
             font-style: italic;
         }
 
+        .b-slot.loser {
+            text-decoration: line-through;
+            opacity: 0.45;
+            color: #ef4444 !important;
+        }
+
+        .b-slot b {
+            font-weight: 900;
+            color: var(--ucl-cyan);
+            font-size: 11px;
+            margin-left: 6px;
+        }
+
         .pos-1 { color: var(--c-1st); }
         .pos-2 { color: var(--c-2nd); }
         .pos-3 { color: var(--c-3rd); }
@@ -644,78 +657,29 @@
             <div class="bracket-container">
                 <div class="bracket-col">
                     <div class="bracket-col-header">1/8 Final</div>
-                    <div class="bracket-matches">
-                        <div class="b-match">
-                            <div class="b-slot pos-1">A1</div>
-                            <div class="b-slot pos-4">B4</div>
-                        </div>
-                        <div class="b-match">
-                            <div class="b-slot pos-2">C2</div>
-                            <div class="b-slot pos-3">D3</div>
-                        </div>
-                        <div class="b-match">
-                            <div class="b-slot pos-1">B1</div>
-                            <div class="b-slot pos-4">A4</div>
-                        </div>
-                        <div class="b-match">
-                            <div class="b-slot pos-2">D2</div>
-                            <div class="b-slot pos-3">C3</div>
-                        </div>
-                        <div class="bracket-divider"></div>
-                        <div class="b-match">
-                            <div class="b-slot pos-1">C1</div>
-                            <div class="b-slot pos-4">D4</div>
-                        </div>
-                        <div class="b-match">
-                            <div class="b-slot pos-2">A2</div>
-                            <div class="b-slot pos-3">B3</div>
-                        </div>
-                        <div class="b-match">
-                            <div class="b-slot pos-1">D1</div>
-                            <div class="b-slot pos-4">C4</div>
-                        </div>
-                        <div class="b-match">
-                            <div class="b-slot pos-2">B2</div>
-                            <div class="b-slot pos-3">A3</div>
-                        </div>
-                    </div>
+                    <div class="bracket-matches" id="bracket-r16"></div>
                 </div>
 
                 <div class="bracket-col">
                     <div class="bracket-col-header">1/4 Final</div>
-                    <div class="bracket-matches">
-                        <div class="b-match"><div class="b-slot empty">1/8 g'olibi</div><div class="b-slot empty">1/8 g'olibi</div></div>
-                        <div class="b-match"><div class="b-slot empty">1/8 g'olibi</div><div class="b-slot empty">1/8 g'olibi</div></div>
-                        <div class="bracket-divider"></div>
-                        <div class="b-match"><div class="b-slot empty">1/8 g'olibi</div><div class="b-slot empty">1/8 g'olibi</div></div>
-                        <div class="b-match"><div class="b-slot empty">1/8 g'olibi</div><div class="b-slot empty">1/8 g'olibi</div></div>
-                    </div>
+                    <div class="bracket-matches" id="bracket-qf"></div>
                 </div>
 
                 <div class="bracket-col">
                     <div class="bracket-col-header">1/2 Final</div>
-                    <div class="bracket-matches">
-                        <div class="b-match"><div class="b-slot empty">1/4 g'olibi</div><div class="b-slot empty">1/4 g'olibi</div></div>
-                        <div class="bracket-divider"></div>
-                        <div class="b-match"><div class="b-slot empty">1/4 g'olibi</div><div class="b-slot empty">1/4 g'olibi</div></div>
-                    </div>
+                    <div class="bracket-matches" id="bracket-sf"></div>
                 </div>
 
                 <div class="bracket-col">
                     <div class="bracket-col-header">Final</div>
-                    <div class="bracket-matches">
-                        <div class="b-match" style="border-color: var(--ucl-border);">
-                            <div class="b-slot empty" style="color: #fff;">Finalchi 1</div>
-                            <div class="b-slot empty" style="color: #fff;">Finalchi 2</div>
-                        </div>
-                    </div>
+                    <div class="bracket-matches" id="bracket-f"></div>
                 </div>
 
                 <div class="bracket-col" style="width: 120px;">
                     <div class="bracket-col-header" style="background: rgba(0, 242, 254, 0.2); border-color: var(--ucl-cyan);">Chempion</div>
-                    <div class="bracket-matches">
+                    <div class="bracket-matches" id="bracket-champ">
                         <div class="b-match" style="border: 1px solid var(--ucl-cyan); text-align: center; background: rgba(0, 242, 254, 0.08);">
-                            <div class="b-slot empty" style="justify-content: center; color: var(--ucl-cyan); font-weight: 800; font-size: 13px;">
+                            <div class="b-slot empty" id="champ-slot" style="justify-content: center; color: var(--ucl-cyan); font-weight: 800; font-size: 13px;">
                                 🏆 G'olib
                             </div>
                         </div>
@@ -780,98 +744,25 @@
         }
 
         let currentActiveGroup = 'A';
-
-        // Mahalliy xotiradan olish yoki dastlabki holat
         const cachedData = localStorage.getItem('ravalliq_cache');
         let initialData = cachedData ? JSON.parse(cachedData) : null;
 
-        let groupsData = initialData?.groups || {
-            "A": [
-                { name: "Mahalla", p: 4, diff: 9, pts: 9 },
-                { name: "2006", p: 4, diff: 0, pts: 9 },
-                { name: "1993", p: 4, diff: 10, pts: 7 },
-                { name: "2003", p: 3, diff: 4, pts: 6 },
-                { name: "2009", p: 5, diff: -10, pts: 6 },
-                { name: "2004", p: 5, diff: -6, pts: 5 },
-                { name: "2009-23", p: 5, diff: -13, pts: 1 }
-            ],
-            "B": [
-                { name: "1996-23", p: 4, diff: 5, pts: 9 },
-                { name: "2002-23", p: 5, diff: 3, pts: 7 },
-                { name: "1986", p: 4, diff: -2, pts: 6 },
-                { name: "2005", p: 4, diff: -10, pts: 6 },
-                { name: "2003-12", p: 4, diff: 5, pts: 4 },
-                { name: "1991-23", p: 3, diff: 0, pts: 4 },
-                { name: "2002", p: 4, diff: -1, pts: 4 }
-            ],
-            "C": [
-                { name: "1988", p: 5, diff: 10, pts: 10 },
-                { name: "2001", p: 4, diff: 6, pts: 10 },
-                { name: "1991", p: 3, diff: 12, pts: 9 },
-                { name: "1998-v", p: 4, diff: 6, pts: 6 },
-                { name: "1992-23", p: 4, diff: -7, pts: 4 },
-                { name: "2000", p: 4, diff: -14, pts: 1 },
-                { name: "2008-23", p: 4, diff: -13, pts: 0 }
-            ],
-            "D": [
-                { name: "1997", p: 4, diff: 22, pts: 12 },
-                { name: "1994", p: 5, diff: 11, pts: 10 },
-                { name: "1995", p: 4, diff: 9, pts: 7 },
-                { name: "1998", p: 4, diff: 3, pts: 7 },
-                { name: "2007", p: 4, diff: -2, pts: 4 },
-                { name: "Obod-98", p: 4, diff: -10, pts: 3 },
-                { name: "1996", p: 5, diff: -33, pts: 0 }
-            ]
-        };
-
-        let scorersData = initialData?.scorers || [
-            { name: "Jahongir", team: "1997", goals: 17 },
-            { name: "Botir", team: "2003", goals: 17 },
-            { name: "Sardor", team: "2001", goals: 15 },
-            { name: "Islom", team: "1993", goals: 13 },
-            { name: "Botir", team: "1998-v", goals: 12 },
-            { name: "Xolyor", team: "2002-23", goals: 12 },
-            { name: "Abdulaziz", team: "2007", goals: 11 },
-            { name: "Farrux", team: "2002-23", goals: 10 },
-            { name: "Lochin", team: "1998", goals: 9 },
-            { name: "Adham", team: "1994", goals: 9 },
-            { name: "Ravshan", team: "2005", goals: 8 }
-        ];
-
-        let matchesData = initialData?.matches || [
-            {
-                date: "9-Sentyabr (Chorshanba)",
-                list: [
-                    { t1: "1986", t2: "2005", time: "18:30" },
-                    { t1: "Mahalla", t2: "2004", time: "19:10" },
-                    { t1: "2006", t2: "2003", time: "19:50" },
-                    { t1: "2003-12", t2: "1991-23", time: "20:30" },
-                    { t1: "1991", t2: "1998-v", time: "21:10" },
-                    { t1: "2008-23", t2: "1992-23", time: "21:50" },
-                    { t1: "1995", t2: "1998", time: "22:30" }
-                ]
-            },
-            {
-                date: "11-Sentyabr (Juma)",
-                list: [
-                    { t1: "1991", t2: "2001", time: "18:30" },
-                    { t1: "2000", t2: "2008-23", time: "19:10" },
-                    { t1: "1991-23", t2: "1996-23", time: "19:50" },
-                    { t1: "2005", t2: "2002", time: "20:30" },
-                    { t1: "Obod", t2: "2007", time: "21:10" },
-                    { t1: "1993", t2: "2003", time: "21:50" },
-                    { t1: "1997", t2: "2007", time: "22:30" }
-                ]
-            }
-        ];
+        let groupsData = initialData?.groups || {};
+        let scorersData = initialData?.scorers || [];
+        let matchesData = initialData?.matches || [];
+        let playoffData = initialData?.playoff || null;
 
         function switchMainTab(tab) {
             ['standings', 'playoff', 'scorers', 'mvp', 'matches'].forEach(t => {
-                document.getElementById(`section-${t}`).classList.add('hidden');
-                document.getElementById(`tab-${t}`).classList.remove('active');
+                const el = document.getElementById(`section-${t}`);
+                const btn = document.getElementById(`tab-${t}`);
+                if (el) el.classList.add('hidden');
+                if (btn) btn.classList.remove('active');
             });
-            document.getElementById(`section-${tab}`).classList.remove('hidden');
-            document.getElementById(`tab-${tab}`).classList.add('active');
+            const activeEl = document.getElementById(`section-${tab}`);
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            if (activeEl) activeEl.classList.remove('hidden');
+            if (activeBtn) activeBtn.classList.add('active');
         }
 
         function sortAllGroups() {
@@ -891,7 +782,7 @@
             });
 
             const tbody = document.getElementById('standings-body');
-            if (!groupsData[grp]) return;
+            if (!groupsData[grp] || !tbody) return;
 
             tbody.innerHTML = groupsData[grp].map((item, idx) => {
                 const rank = idx + 1;
@@ -917,6 +808,7 @@
 
         function renderScorers(items = null) {
             const container = document.getElementById('scorers-body');
+            if (!container) return;
             scorersData.sort((a, b) => b.goals - a.goals);
             const rankedList = scorersData.map((s, idx) => ({ ...s, overallRank: idx + 1 }));
             const listToRender = items !== null ? items : rankedList;
@@ -962,6 +854,7 @@
 
         function renderMatches() {
             const container = document.getElementById('matches-body');
+            if (!container) return;
             container.innerHTML = matchesData.map(group => `
                 <div>
                     <div class="date-title">📅 ${group.date}</div>
@@ -981,14 +874,107 @@
             `).join('');
         }
 
+        // --- PLAY-OFF RENDERING FUNKSIYASI ---
+        function renderPlayoff(po) {
+            if (!po) return;
+
+            const r16Colors = [
+                ['pos-1', 'pos-4'],
+                ['pos-2', 'pos-3'],
+                ['pos-1', 'pos-4'],
+                ['pos-2', 'pos-3'],
+                ['pos-1', 'pos-4'],
+                ['pos-2', 'pos-3'],
+                ['pos-1', 'pos-4'],
+                ['pos-2', 'pos-3']
+            ];
+
+            // 1/8 Final
+            const r16El = document.getElementById('bracket-r16');
+            if (r16El && po.r16) {
+                let html = '';
+                po.r16.forEach((m, idx) => {
+                    const t1Lost = m.winner && m.winner !== m.t1;
+                    const t2Lost = m.winner && m.winner !== m.t2;
+                    const c1 = r16Colors[idx] ? r16Colors[idx][0] : '';
+                    const c2 = r16Colors[idx] ? r16Colors[idx][1] : '';
+
+                    html += `
+                    <div class="b-match">
+                        <div class="b-slot ${c1} ${t1Lost ? 'loser' : ''}">
+                            <span>${m.t1}</span><b>${m.s1 || ''}</b>
+                        </div>
+                        <div class="b-slot ${c2} ${t2Lost ? 'loser' : ''}">
+                            <span>${m.t2}</span><b>${m.s2 || ''}</b>
+                        </div>
+                    </div>`;
+                    if (idx === 3) html += '<div class="bracket-divider"></div>';
+                });
+                r16El.innerHTML = html;
+            }
+
+            // 1/4 Final
+            const qfEl = document.getElementById('bracket-qf');
+            if (qfEl && po.qf) {
+                let html = '';
+                po.qf.forEach((m, idx) => {
+                    const t1Lost = m.winner && m.winner !== m.t1;
+                    const t2Lost = m.winner && m.winner !== m.t2;
+                    html += `
+                    <div class="b-match">
+                        <div class="b-slot ${t1Lost ? 'loser' : ''}"><span>${m.t1}</span><b>${m.s1 || ''}</b></div>
+                        <div class="b-slot ${t2Lost ? 'loser' : ''}"><span>${m.t2}</span><b>${m.s2 || ''}</b></div>
+                    </div>`;
+                    if (idx === 1) html += '<div class="bracket-divider"></div>';
+                });
+                qfEl.innerHTML = html;
+            }
+
+            // 1/2 Final
+            const sfEl = document.getElementById('bracket-sf');
+            if (sfEl && po.sf) {
+                let html = '';
+                po.sf.forEach((m, idx) => {
+                    const t1Lost = m.winner && m.winner !== m.t1;
+                    const t2Lost = m.winner && m.winner !== m.t2;
+                    html += `
+                    <div class="b-match">
+                        <div class="b-slot ${t1Lost ? 'loser' : ''}"><span>${m.t1}</span><b>${m.s1 || ''}</b></div>
+                        <div class="b-slot ${t2Lost ? 'loser' : ''}"><span>${m.t2}</span><b>${m.s2 || ''}</b></div>
+                    </div>`;
+                    if (idx === 0) html += '<div class="bracket-divider"></div>';
+                });
+                sfEl.innerHTML = html;
+            }
+
+            // Final
+            const fEl = document.getElementById('bracket-f');
+            if (fEl && po.f && po.f[0]) {
+                const m = po.f[0];
+                const t1Lost = m.winner && m.winner !== m.t1;
+                const t2Lost = m.winner && m.winner !== m.t2;
+                fEl.innerHTML = `
+                <div class="b-match" style="border-color: var(--ucl-border);">
+                    <div class="b-slot ${t1Lost ? 'loser' : ''}" style="color: #fff;"><span>${m.t1}</span><b>${m.s1 || ''}</b></div>
+                    <div class="b-slot ${t2Lost ? 'loser' : ''}" style="color: #fff;"><span>${m.t2}</span><b>${m.s2 || ''}</b></div>
+                </div>`;
+            }
+
+            // Chempion
+            const champEl = document.getElementById('champ-slot');
+            if (champEl && po.champion) {
+                champEl.innerHTML = `🏆 ${po.champion}`;
+            }
+        }
+
         function updateAllUI() {
             sortAllGroups();
             renderGroup(currentActiveGroup);
             renderScorers();
             renderMatches();
+            if (playoffData) renderPlayoff(playoffData);
         }
 
-        // Boshlang'ich rendering
         updateAllUI();
 
         // Keshlanmaydigan Jonli GitHub API orqali tortish
@@ -1006,12 +992,13 @@
             if (data.groups) groupsData = data.groups;
             if (data.scorers && data.scorers.length > 0) scorersData = data.scorers;
             if (data.matches && data.matches.length > 0) matchesData = data.matches;
+            if (data.playoff) playoffData = data.playoff;
 
-            // Xotiraga saqlab qo'yish (hech qachon eski holatga qaytmaydi)
             localStorage.setItem('ravalliq_cache', JSON.stringify({
                 groups: groupsData,
                 scorers: scorersData,
-                matches: matchesData
+                matches: matchesData,
+                playoff: playoffData
             }));
 
             updateAllUI();
