@@ -113,7 +113,7 @@ async def private_start(message: types.Message):
     full_name = f"{user.first_name or ''} {user.last_name or ''}".strip()
     username = f"@{user.username}" if user.username else "yo'q"
 
-    # data.json orqali doimiy saqlanadigan foydalanuvchilar bazasi
+    # data.json orqali foydalanuvchilarni doimiy saqlash
     raw_data, sha, _ = await get_github_file(FILE_PATH)
     data = json.loads(raw_data.decode("utf-8")) if raw_data else {}
     if "users" not in data:
@@ -147,7 +147,6 @@ async def private_start(message: types.Message):
                     pass
 
     total_users_count = len(data.get("users", {}))
-    # Keshlanishni butunlay yengish uchun dinamik URL parametri
     fresh_app_url = f"{BASE_APP_URL}?v={int(time.time())}"
 
     keyboard = InlineKeyboardMarkup(
@@ -173,7 +172,7 @@ async def admin_help(message: types.Message):
         "<code>/match Mahalla 2 - 1 2004</code>\n\n"
         "<b>2. Avtomatik 1/8 Play-off to'rini shakllantirish:</b>\n"
         "<code>/generate_playoff</code>\n"
-        "<i>(Guruh natijalariga ko'ra A1-B4, C2-D3... juftliklarini to'ldiradi)</i>\n\n"
+        "<i>(Har bir jamoada 6 ta o'yin tugagandan so'ng 1/8 to'rini to'ldiradi)</i>\n\n"
         "<b>3. Play-off o'yinini kiritish:</b>\n"
         "<code>/playoff r16 1 1994 3 - 1 1991</code>\n"
         "<i>(Bosqichlar: r16, qf, sf, f)</i>\n\n"
@@ -288,7 +287,7 @@ async def generate_playoff_bracket(message: types.Message):
     if message.from_user.id not in ADMIN_IDS:
         return
 
-    wait_msg = await message.answer("⏳ Guruhlar saralanmoqda va Play-off to'ri shakllantirilmoqda...")
+    wait_msg = await message.answer("⏳ Guruhlar tekshirilmoqda va saralanmoqda...")
     raw_data, sha, err = await get_github_file(FILE_PATH)
     if not raw_data:
         await wait_msg.edit_text(f"❌ Xatolik: {err}")
@@ -298,16 +297,33 @@ async def generate_playoff_bracket(message: types.Message):
     groups = data.get("groups", {})
 
     standings = {}
-    for grp_name, teams in groups.items():
-        sorted_teams = sorted(teams, key=lambda x: (x["pts"], x["diff"]), reverse=True)
+    unfinished_info = []
+
+    # Har bir guruh tekshiriladi: har bir jamoada p == 6 bo'lishi shart
+    for grp_name in ["A", "B", "C", "D"]:
+        teams = groups.get(grp_name, [])
+        remaining_teams = [t for t in teams if t.get("p", 0) < 6]
+
+        if remaining_teams:
+            rem_str = ", ".join([f"{t['name']} ({t.get('p', 0)}/6)" for t in remaining_teams])
+            unfinished_info.append(f"• <b>{grp_name} guruhi:</b> {rem_str}")
+
+        sorted_teams = sorted(teams, key=lambda x: (x.get("pts", 0), x.get("diff", 0)), reverse=True)
         standings[grp_name] = [t["name"] for t in sorted_teams]
 
-    for g in ["A", "B", "C", "D"]:
-        if len(standings.get(g, [])) < 4:
-            await wait_msg.edit_text(f"⚠️ {g} guruhida kamida 4 ta jamoa bo'lishi kerak!")
-            return
+    # Agar hali 6 ta o'yinini o'ynab bo'lmagan jamoalar bo'lsa
+    if unfinished_info:
+        warning_text = (
+            "⚠️ <b>Guruh bosqichi hali yakunlanmagan!</b>\n"
+            "Quyidagi jamoalar hali 6 ta o'yinini to'liq o'tkazmagan:\n\n" +
+            "\n".join(unfinished_info) +
+            "\n\n<i>Barcha jamoalar 6 tadan o'yinni o'ynab bo'lgach, ushbu buyruq orqali 1/8 to'ri avtomatik shakllanadi.</i>"
+        )
+        await wait_msg.edit_text(warning_text, parse_mode="HTML")
+        return
 
-    # Turnir to'ri sxemasi: A1-B4, C2-D3, B1-A4, D2-C3, C1-D4, A2-B3, D1-C4, B2-A3
+    # 6 ta o'yin to'liq yakunlangach 1/8 final sxemasi:
+    # A1-B4, C2-D3, B1-A4, D2-C3, C1-D4, A2-B3, D1-C4, B2-A3
     r16_matches = [
         {"t1": standings["A"][0], "s1": "", "t2": standings["B"][3], "s2": "", "winner": ""},
         {"t1": standings["C"][1], "s1": "", "t2": standings["D"][2], "s2": "", "winner": ""},
@@ -331,15 +347,16 @@ async def generate_playoff_bracket(message: types.Message):
     success = await update_github_file(
         json.dumps(data, ensure_ascii=False, indent=2).encode("utf-8"),
         sha,
-        "Auto-generate 1/8 Final playoff bracket"
+        "Auto-generate 1/8 Final bracket (all 6 matches finished)"
     )
 
     if success:
         juftliklar_text = "\n".join([f"{i+1}. <b>{m['t1']}</b> vs <b>{m['t2']}</b>" for i, m in enumerate(r16_matches)])
         await wait_msg.edit_text(
-            f"✅ <b>Play-off (1/8 Final) to'ri muvaffaqiyatli shakllantirildi!</b>\n\n"
+            f"🎉 <b>Barcha guruh o'yinlari (6 tadan) to'liq yakunlandi!</b>\n\n"
+            f"🏆 <b>1/8 Final to'ri shakllantirildi:</b>\n"
             f"{juftliklar_text}\n\n"
-            f"Mini App orqali Play-off sahifasini tekshirishingiz mumkin.",
+            f"Mini App saytini ochib ko'rishingiz mumkin.",
             parse_mode="HTML"
         )
     else:
