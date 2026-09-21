@@ -1,7 +1,6 @@
 import asyncio
 import json
 import base64
-import time
 import aiohttp
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import CommandStart, Command
@@ -16,7 +15,7 @@ from aiogram.types import (
 )
 
 BOT_TOKEN = "8744135035:AAEqm6n6BUqbDSJAw3t_AOBoEj_Hm0lf0tc"
-BASE_APP_URL = "https://javokhir7.github.io/football_bot/"
+MINI_APP_URL = "https://javokhir7.github.io/football_bot/?v=7"
 
 # Ikkala admin ID raqamlari
 ADMIN_IDS = [314323733, 5394390497]
@@ -26,6 +25,8 @@ GITHUB_TOKEN = "ghp_" + "CadIiSkt0R65ZtT2y7xofAdr5ViwPk0ap3cZ"
 REPO_OWNER = "Javokhir7"
 REPO_NAME = "football_bot"
 FILE_PATH = "data.json"
+
+active_users = {}
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
@@ -72,7 +73,7 @@ async def update_github_file(content_bytes, sha, commit_msg, path=FILE_PATH):
 # --- KOMANDALAR MENYUSINI O'RNATISH ---
 
 async def set_bot_commands(bot: Bot):
-    # Oddiy foydalanuvchilar menyusi
+    # Oddiy foydalanuvchilar ko'radigan menyu
     user_commands = [
         BotCommand(command="start", description="🏆 Chempionat jadvalini ochish")
     ]
@@ -82,7 +83,6 @@ async def set_bot_commands(bot: Bot):
     admin_commands = [
         BotCommand(command="start", description="🏆 Jadvalni ochish"),
         BotCommand(command="match", description="⚽ Guruh o'yini hisobini kiritish"),
-        BotCommand(command="generate_playoff", description="⚡ Guruhdan 1/8 Play-off tuzish"),
         BotCommand(command="playoff", description="🏆 Play-off natijasini kiritish"),
         BotCommand(command="newday", description="📅 Yangi taqvim qo'shish"),
         BotCommand(command="goal", description="🎯 To'purarga gol qo'shish"),
@@ -109,56 +109,35 @@ async def block_group(message: types.Message):
 @dp.message(CommandStart(), F.chat.type == ChatType.PRIVATE)
 async def private_start(message: types.Message):
     user = message.from_user
-    user_id = str(user.id)
+    user_id = user.id
     full_name = f"{user.first_name or ''} {user.last_name or ''}".strip()
     username = f"@{user.username}" if user.username else "yo'q"
 
-    # data.json orqali foydalanuvchilarni doimiy saqlash
-    raw_data, sha, _ = await get_github_file(FILE_PATH)
-    data = json.loads(raw_data.decode("utf-8")) if raw_data else {}
-    if "users" not in data:
-        data["users"] = {}
+    is_new = user_id not in active_users
+    active_users[user_id] = {"name": full_name, "username": username}
 
-    is_new = user_id not in data["users"]
-    data["users"][user_id] = {
-        "name": full_name,
-        "username": username,
-        "last_active": int(time.time())
-    }
-
-    if is_new:
-        await update_github_file(
-            json.dumps(data, ensure_ascii=False, indent=2).encode("utf-8"),
-            sha,
-            f"New user: {full_name}"
+    if is_new and user_id not in ADMIN_IDS:
+        admin_alert = (
+            f"🚨 <b>Yangi foydalanuvchi kirdi!</b>\n\n"
+            f"👤 <b>Ism:</b> {full_name}\n"
+            f"🔗 <b>Username:</b> {username}\n"
+            f"🆔 <b>ID:</b> <code>{user_id}</code>\n"
+            f"📊 <b>Jami foydalanuvchilar:</b> {len(active_users)}"
         )
-        if int(user_id) not in ADMIN_IDS:
-            admin_alert = (
-                f"🚨 <b>Yangi foydalanuvchi kirdi!</b>\n\n"
-                f"👤 <b>Ism:</b> {full_name}\n"
-                f"🔗 <b>Username:</b> {username}\n"
-                f"🆔 <b>ID:</b> <code>{user_id}</code>\n"
-                f"📊 <b>Jami foydalanuvchilar:</b> {len(data['users'])}"
-            )
-            for adm in ADMIN_IDS:
-                try:
-                    await bot.send_message(chat_id=adm, text=admin_alert, parse_mode="HTML")
-                except Exception:
-                    pass
-
-    total_users_count = len(data.get("users", {}))
-    fresh_app_url = f"{BASE_APP_URL}?v={int(time.time())}"
+        for adm in ADMIN_IDS:
+            try:
+                await bot.send_message(chat_id=adm, text=admin_alert, parse_mode="HTML")
+            except Exception:
+                pass
 
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[[
-            InlineKeyboardButton(text="🏆 Chempionat jadvalini ochish", web_app=WebAppInfo(url=fresh_app_url))
+            InlineKeyboardButton(text="🏆 Chempionat jadvalini ochish", web_app=WebAppInfo(url=MINI_APP_URL))
         ]]
     )
     text = (
-        f"🏆 <b>Ravalliq Chempionati</b>\n\n"
-        f"Turnir jadvali, to'purarlar va o'yinlar taqvimi jonli yangilanib boradi.\n\n"
-        f"👥 <b>Turnir kuzatuvchilari:</b> {total_users_count} kishi\n\n"
-        f"Natijalarni ko'rish uchun pastdagi tugmani bosing 👇"
+        "🏆 <b>Ravalliq Chempionati</b>\n\n"
+        "Turnir jadvali, to'purarlar va o'yinlar taqvimini ko'rish uchun pastdagi tugmani bosing:"
     )
     await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
 
@@ -169,21 +148,20 @@ async def admin_help(message: types.Message):
     text = (
         "⚙️ <b>Admin boshqaruv paneli</b>\n\n"
         "<b>1. Guruh o'yini hisobini kiritish:</b>\n"
-        "<code>/match Mahalla 2 - 1 2004</code>\n\n"
-        "<b>2. Avtomatik 1/8 Play-off to'rini shakllantirish:</b>\n"
-        "<code>/generate_playoff</code>\n"
-        "<i>(Har bir jamoada 6 ta o'yin tugagandan so'ng 1/8 to'rini to'ldiradi)</i>\n\n"
+        "<code>/match Mahalla 2 - 1 2004</code>\n"
+        "<i>(Jadval ham, taqvimdagi vaqt ham avtomatik almashadi)</i>\n\n"
+        "<b>2. Yangi o'yinlar taqvimini kiritish:</b>\n"
+        "<code>/newday 13-Sentyabr (Yakshanba) | 1986 18:30 2005, Mahalla 19:10 2004</code>\n\n"
         "<b>3. Play-off o'yinini kiritish:</b>\n"
         "<code>/playoff r16 1 1994 3 - 1 1991</code>\n"
         "<i>(Bosqichlar: r16, qf, sf, f)</i>\n\n"
-        "<b>4. Yangi o'yinlar taqvimini kiritish:</b>\n"
-        "<code>/newday 13-Sentyabr (Yakshanba) | 1986 18:30 2005, Mahalla 19:10 2004</code>\n\n"
-        "<b>5. MVP yangilash:</b>\n"
+        "<b>4. MVP yangilash:</b>\n"
         "Botga yangi MVP rasmini yuboring va izohiga:\n"
         "<code>Ism Familiya | Jamoa | Tavsif</code> deb yozing.\n\n"
-        "<b>6. To'purarga gol qo'shish:</b>\n"
+        "<b>5. To'purarga gol qo'shish:</b>\n"
         "<code>/goal Sardor 2001 2</code>\n\n"
-        "<b>7. Qo'shimcha:</b> <code>/admins</code> | <code>/users</code>"
+        "<b>6. Adminlarni ko'rish:</b> <code>/admins</code>\n"
+        "<b>7. Foydalanuvchilar:</b> <code>/users</code>"
     )
     await message.answer(text, parse_mode="HTML")
 
@@ -227,6 +205,7 @@ async def add_match_result(message: types.Message):
         return
     data = json.loads(raw_data.decode("utf-8"))
 
+    # 1. Turnir jadvalini yangilash
     t1_found, t2_found = False, False
     diff_t1 = score1 - score2
     diff_t2 = score2 - score1
@@ -251,6 +230,7 @@ async def add_match_result(message: types.Message):
         await wait_msg.edit_text(f"⚠️ Jamoalar jadvaldan topilmadi!\nTopildi: {team1} ({t1_found}), {team2} ({t2_found})")
         return
 
+    # 2. O'yinlar taqvimini (matches) yangilash
     schedule_updated = False
     if "matches" in data:
         for day in data["matches"]:
@@ -281,136 +261,6 @@ async def add_match_result(message: types.Message):
         )
     else:
         await wait_msg.edit_text("❌ GitHub'ga saqlashda xatolik yuz berdi.")
-
-@dp.message(Command("generate_playoff"), F.chat.type == ChatType.PRIVATE)
-async def generate_playoff_bracket(message: types.Message):
-    if message.from_user.id not in ADMIN_IDS:
-        return
-
-    wait_msg = await message.answer("⏳ Guruhlar tekshirilmoqda va saralanmoqda...")
-    raw_data, sha, err = await get_github_file(FILE_PATH)
-    if not raw_data:
-        await wait_msg.edit_text(f"❌ Xatolik: {err}")
-        return
-
-    data = json.loads(raw_data.decode("utf-8"))
-    groups = data.get("groups", {})
-
-    standings = {}
-    unfinished_info = []
-
-    # Har bir guruh tekshiriladi: har bir jamoada p == 6 bo'lishi shart
-    for grp_name in ["A", "B", "C", "D"]:
-        teams = groups.get(grp_name, [])
-        remaining_teams = [t for t in teams if t.get("p", 0) < 6]
-
-        if remaining_teams:
-            rem_str = ", ".join([f"{t['name']} ({t.get('p', 0)}/6)" for t in remaining_teams])
-            unfinished_info.append(f"• <b>{grp_name} guruhi:</b> {rem_str}")
-
-        sorted_teams = sorted(teams, key=lambda x: (x.get("pts", 0), x.get("diff", 0)), reverse=True)
-        standings[grp_name] = [t["name"] for t in sorted_teams]
-
-    # Agar hali 6 ta o'yinini o'ynab bo'lmagan jamoalar bo'lsa
-    if unfinished_info:
-        warning_text = (
-            "⚠️ <b>Guruh bosqichi hali yakunlanmagan!</b>\n"
-            "Quyidagi jamoalar hali 6 ta o'yinini to'liq o'tkazmagan:\n\n" +
-            "\n".join(unfinished_info) +
-            "\n\n<i>Barcha jamoalar 6 tadan o'yinni o'ynab bo'lgach, ushbu buyruq orqali 1/8 to'ri avtomatik shakllanadi.</i>"
-        )
-        await wait_msg.edit_text(warning_text, parse_mode="HTML")
-        return
-
-    # 6 ta o'yin to'liq yakunlangach 1/8 final sxemasi:
-    # A1-B4, C2-D3, B1-A4, D2-C3, C1-D4, A2-B3, D1-C4, B2-A3
-    r16_matches = [
-        {"t1": standings["A"][0], "s1": "", "t2": standings["B"][3], "s2": "", "winner": ""},
-        {"t1": standings["C"][1], "s1": "", "t2": standings["D"][2], "s2": "", "winner": ""},
-        {"t1": standings["B"][0], "s1": "", "t2": standings["A"][3], "s2": "", "winner": ""},
-        {"t1": standings["D"][1], "s1": "", "t2": standings["C"][2], "s2": "", "winner": ""},
-        {"t1": standings["C"][0], "s1": "", "t2": standings["D"][3], "s2": "", "winner": ""},
-        {"t1": standings["A"][1], "s1": "", "t2": standings["B"][2], "s2": "", "winner": ""},
-        {"t1": standings["D"][0], "s1": "", "t2": standings["C"][3], "s2": "", "winner": ""},
-        {"t1": standings["B"][1], "s1": "", "t2": standings["A"][2], "s2": "", "winner": ""},
-    ]
-
-    if "playoff" not in data:
-        data["playoff"] = {}
-
-    data["playoff"]["r16"] = r16_matches
-    data["playoff"]["qf"] = [{"t1": "1/8 g'olibi", "s1": "", "t2": "1/8 g'olibi", "s2": "", "winner": ""} for _ in range(4)]
-    data["playoff"]["sf"] = [{"t1": "1/4 g'olibi", "s1": "", "t2": "1/4 g'olibi", "s2": "", "winner": ""} for _ in range(2)]
-    data["playoff"]["f"] = [{"t1": "Finalchi 1", "s1": "", "t2": "Finalchi 2", "s2": "", "winner": ""}]
-    data["playoff"]["champion"] = ""
-
-    success = await update_github_file(
-        json.dumps(data, ensure_ascii=False, indent=2).encode("utf-8"),
-        sha,
-        "Auto-generate 1/8 Final bracket (all 6 matches finished)"
-    )
-
-    if success:
-        juftliklar_text = "\n".join([f"{i+1}. <b>{m['t1']}</b> vs <b>{m['t2']}</b>" for i, m in enumerate(r16_matches)])
-        await wait_msg.edit_text(
-            f"🎉 <b>Barcha guruh o'yinlari (6 tadan) to'liq yakunlandi!</b>\n\n"
-            f"🏆 <b>1/8 Final to'ri shakllantirildi:</b>\n"
-            f"{juftliklar_text}\n\n"
-            f"Mini App saytini ochib ko'rishingiz mumkin.",
-            parse_mode="HTML"
-        )
-    else:
-        await wait_msg.edit_text("❌ GitHub'ga yozishda xatolik yuz berdi.")
-
-@dp.message(Command("playoff"), F.chat.type == ChatType.PRIVATE)
-async def playoff_handler(message: types.Message):
-    if message.from_user.id not in ADMIN_IDS:
-        return
-    parts = message.text.replace("/playoff", "").strip().split()
-    if len(parts) < 7 or parts[4] != "-":
-        await message.answer("⚠️ Format: <code>/playoff r16 1 1994 3 - 1 1991</code>\n(Bosqichlar: r16, qf, sf, f)", parse_mode="HTML")
-        return
-
-    stage, idx_str, t1, s1, s2, t2 = parts[0].lower(), parts[1], parts[2], int(parts[3]), int(parts[5]), parts[6]
-    match_idx = int(idx_str) - 1
-
-    wait_msg = await message.answer("⏳ Play-off yangilanmoqda...")
-    raw_data, sha, err = await get_github_file(FILE_PATH)
-    if not raw_data:
-        await wait_msg.edit_text(f"❌ Xatolik: {err}")
-        return
-    data = json.loads(raw_data.decode("utf-8"))
-
-    if "playoff" not in data or stage not in data["playoff"]:
-        await wait_msg.edit_text("❌ data.json ichida play-off bosqichi topilmadi.")
-        return
-
-    winner = t1 if s1 > s2 else t2
-    data["playoff"][stage][match_idx] = {
-        "t1": t1, "s1": str(s1),
-        "t2": t2, "s2": str(s2),
-        "winner": winner
-    }
-
-    next_stage_map = {"r16": "qf", "qf": "sf", "sf": "f"}
-    if stage in next_stage_map:
-        next_stage = next_stage_map[stage]
-        next_idx = match_idx // 2
-        is_t1 = (match_idx % 2 == 0)
-        
-        target = data["playoff"][next_stage][next_idx]
-        if is_t1:
-            target["t1"] = winner
-        else:
-            target["t2"] = winner
-    elif stage == "f":
-        data["playoff"]["champion"] = winner
-
-    success = await update_github_file(json.dumps(data, ensure_ascii=False, indent=2).encode("utf-8"), sha, f"Playoff {stage} update")
-    if success:
-        await wait_msg.edit_text(f"✅ Play-off yangilandi!\n🏆 G'olib: <b>{winner}</b>", parse_mode="HTML")
-    else:
-        await wait_msg.edit_text("❌ Saqlashda xatolik yuz berdi.")
 
 @dp.message(Command("newday"), F.chat.type == ChatType.PRIVATE)
 async def newday_handler(message: types.Message):
@@ -446,6 +296,57 @@ async def newday_handler(message: types.Message):
     else:
         await wait_msg.edit_text("❌ Saqlashda xatolik yuz berdi.")
 
+@dp.message(Command("playoff"), F.chat.type == ChatType.PRIVATE)
+async def playoff_handler(message: types.Message):
+    if message.from_user.id not in ADMIN_IDS:
+        return
+    parts = message.text.replace("/playoff", "").strip().split()
+    if len(parts) < 7 or parts[4] != "-":
+        await message.answer("⚠️ Format: <code>/playoff r16 1 1994 3 - 1 1991</code>\n(Bosqichlar: r16, qf, sf, f)", parse_mode="HTML")
+        return
+
+    stage, idx_str, t1, s1, s2, t2 = parts[0].lower(), parts[1], parts[2], int(parts[3]), int(parts[5]), parts[6]
+    match_idx = int(idx_str) - 1
+
+    wait_msg = await message.answer("⏳ Play-off yangilanmoqda...")
+    raw_data, sha, err = await get_github_file(FILE_PATH)
+    if not raw_data:
+        await wait_msg.edit_text(f"❌ Xatolik: {err}")
+        return
+    data = json.loads(raw_data.decode("utf-8"))
+
+    if "playoff" not in data or stage not in data["playoff"]:
+        await wait_msg.edit_text("❌ data.json ichida play-off bosqichi topilmadi.")
+        return
+
+    winner = t1 if s1 > s2 else t2
+    data["playoff"][stage][match_idx] = {
+        "t1": t1, "s1": str(s1),
+        "t2": t2, "s2": str(s2),
+        "winner": winner
+    }
+
+    # G'olibni keyingi bosqichga o'tkazish
+    next_stage_map = {"r16": "qf", "qf": "sf", "sf": "f"}
+    if stage in next_stage_map:
+        next_stage = next_stage_map[stage]
+        next_idx = match_idx // 2
+        is_t1 = (match_idx % 2 == 0)
+        
+        target = data["playoff"][next_stage][next_idx]
+        if is_t1:
+            target["t1"] = winner
+        else:
+            target["t2"] = winner
+    elif stage == "f":
+        data["playoff"]["champion"] = winner
+
+    success = await update_github_file(json.dumps(data, ensure_ascii=False, indent=2).encode("utf-8"), sha, f"Playoff {stage} update")
+    if success:
+        await wait_msg.edit_text(f"✅ Play-off yangilandi!\n🏆 G'olib: <b>{winner}</b>", parse_mode="HTML")
+    else:
+        await wait_msg.edit_text("❌ Saqlashda xatolik yuz berdi.")
+
 @dp.message(F.photo, F.chat.type == ChatType.PRIVATE)
 async def mvp_photo_handler(message: types.Message):
     if message.from_user.id not in ADMIN_IDS:
@@ -466,9 +367,11 @@ async def mvp_photo_handler(message: types.Message):
     file_info = await bot.get_file(photo.file_id)
     img_bytes = await bot.download_file(file_info.file_path)
 
+    # 1. mvp.jpg faylini GitHub'ga yuklash
     _, img_sha, _ = await get_github_file("mvp.jpg")
     await update_github_file(img_bytes.read(), img_sha, "Update MVP photo", "mvp.jpg")
 
+    # 2. data.json faylida MVP ma'lumotlarini yangilash
     raw_data, json_sha, _ = await get_github_file(FILE_PATH)
     data = json.loads(raw_data.decode("utf-8"))
     data["mvp"] = {
@@ -528,22 +431,19 @@ async def list_users(message: types.Message):
     if message.from_user.id not in ADMIN_IDS:
         return
 
-    raw_data, _, _ = await get_github_file(FILE_PATH)
-    data = json.loads(raw_data.decode("utf-8")) if raw_data else {}
-    users_dict = data.get("users", {})
-
-    if not users_dict:
+    if not active_users:
         await message.answer("Hozircha hech kim kirmadi.")
         return
 
-    report = f"👥 <b>Jami kirganlar soni:</b> {len(users_dict)}\n\n"
-    for idx, (uid, udata) in enumerate(users_dict.items(), 1):
-        report += f"{idx}. {udata['name']} ({udata['username']}) - <code>{uid}</code>\n"
+    report = f"👥 <b>Jami kirganlar soni:</b> {len(active_users)}\n\n"
+    for idx, (uid, data) in enumerate(active_users.items(), 1):
+        report += f"{idx}. {data['name']} ({data['username']}) - <code>{uid}</code>\n"
 
     await message.answer(report, parse_mode="HTML")
 
 async def main():
     await set_bot_commands(bot)
+    # Webhookni o'chirib tashlaymiz, shunda Polling xatosiz ishlaydi
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
